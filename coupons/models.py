@@ -32,11 +32,11 @@ import random
 
 from django.conf import settings
 from django.db import IntegrityError
-from django.db import models
 from django.dispatch import Signal
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from fluo.db import models
 
 from .settings import (
     COUPON_TYPES,
@@ -93,7 +93,7 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
 
 
 @python_2_unicode_compatible
-class Coupon(models.Model):
+class Coupon(models.TimestampModel):
     objects = CouponManager()
 
     value = models.IntegerField(
@@ -115,10 +115,6 @@ class Coupon(models.Model):
     user_limit = models.PositiveIntegerField(
         default=1,
         verbose_name=_("User limit"),
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_("Created at"),
     )
     valid_until = models.DateTimeField(
         verbose_name=_("Valid until"),
