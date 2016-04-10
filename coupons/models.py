@@ -48,13 +48,6 @@ from .settings import (
 )
 
 
-try:
-    user_model = settings.AUTH_USER_MODEL
-except AttributeError:
-    from django.contrib.auth.models import User as user_model
-redeem_done = Signal(providing_args=["coupon"])
-
-
 class CouponManager(models.Manager):
     def create_coupon(self, type, value, users=[], valid_until=None, prefix="", campaign=None, user_limit=None):
         coupon = self.create(
@@ -180,7 +173,7 @@ class Campaign(models.Model):
 @python_2_unicode_compatible
 class CouponUser(models.Model):
     coupon = models.ForeignKey(Coupon, related_name='users')
-    user = models.ForeignKey(user_model, verbose_name=_("User"), null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), null=True, blank=True)
     redeemed_at = models.DateTimeField(_("Redeemed at"), blank=True, null=True)
 
     class Meta:
