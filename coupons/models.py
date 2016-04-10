@@ -183,6 +183,8 @@ class CouponUser(models.Model):
 
     class Meta:
         unique_together = (('coupon', 'user'),)
+        verbose_name = _("Coupon")
+        verbose_name_plural = _("Coupons")
 
     def __str__(self):
         return str(self.user)
