@@ -28,7 +28,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib import admin
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
@@ -63,10 +63,9 @@ class CouponAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super(CouponAdmin, self).get_urls()
-        my_urls = patterns(
-            '',
+        my_urls = [
             url(r'generate-coupons', self.admin_site.admin_view(GenerateCouponsAdminView.as_view()), name='generate_coupons'),
-        )
+        ]
         return my_urls + urls
 
 
