@@ -48,7 +48,21 @@ from .settings import (
 )
 
 
-class CouponManager(models.Manager):
+redeem_done = Signal(providing_args=["coupon"])
+
+
+class CouponQuerySet(models.QuerySet):
+    def used(self):
+        return self.exclude(users__redeemed_at__isnull=True)
+
+    def unused(self):
+        return self.filter(users__redeemed_at__isnull=True)
+
+    def expired(self):
+        return self.filter(valid_until__lt=timezone.now())
+
+
+class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
     def create_coupon(self, type, value, users=[], valid_until=None, prefix="", campaign=None, user_limit=None):
         coupon = self.create(
             value=value,
@@ -77,19 +91,12 @@ class CouponManager(models.Manager):
             coupons.append(self.create_coupon(type, value, None, valid_until, prefix, campaign))
         return coupons
 
-    def used(self):
-        return self.exclude(users__redeemed_at__isnull=True)
-
-    def unused(self):
-        return self.filter(users__redeemed_at__isnull=True)
-
-    def expired(self):
-        return self.filter(valid_until__lt=timezone.now())
-
 
 @python_2_unicode_compatible
 class Coupon(models.Model):
     value = models.IntegerField(_("Value"), help_text=_("Arbitrary coupon value"))
+    objects = CouponManager()
+
     code = models.CharField(
         _("Code"), max_length=30, unique=True, blank=True,
         help_text=_("Leaving this field empty will generate a random code."))
@@ -100,8 +107,6 @@ class Coupon(models.Model):
         _("Valid until"), blank=True, null=True,
         help_text=_("Leave empty for coupons that never expire"))
     campaign = models.ForeignKey('Campaign', verbose_name=_("Campaign"), blank=True, null=True, related_name='coupons')
-
-    objects = CouponManager()
 
     class Meta:
         ordering = ['created_at']
