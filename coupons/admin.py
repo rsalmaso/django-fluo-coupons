@@ -71,7 +71,7 @@ admin.site.register(Coupon, CouponAdmin)
 
 
 class GenerateCouponsAdminView(TemplateView):
-    template_name = "admin/generate_coupons.html"
+    template_name = "admin/coupons/generate_coupons.html"
 
     def get_context_data(self, **kwargs):
         context = super(GenerateCouponsAdminView, self).get_context_data(**kwargs)
