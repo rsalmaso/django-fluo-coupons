@@ -18,6 +18,7 @@ setup(
     url="https://bitbucket.org/rsalmaso/django-fluo-coupons",
     include_package_data=True,
     packages=find_packages(),
+    install_require=["django-fluo"],
     classifiers=[
         "Framework :: Django",
         "Intended Audience :: Developers",
