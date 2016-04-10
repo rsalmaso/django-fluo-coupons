@@ -36,35 +36,50 @@ from .settings import COUPON_TYPES
 
 
 class CouponGenerationForm(forms.Form):
-    quantity = forms.IntegerField(label=_("Quantity"))
-    value = forms.IntegerField(label=_("Value"))
-    type = forms.ChoiceField(label=_("Type"), choices=COUPON_TYPES)
+    quantity = forms.IntegerField(
+        label=_("Quantity"),
+    )
+    value = forms.IntegerField(
+        label=_("Value"),
+    )
+    type = forms.ChoiceField(
+        choices=COUPON_TYPES,
+        label=_("Type"),
+    )
     valid_until = forms.SplitDateTimeField(
-        label=_("Valid until"), required=False,
+        required=False,
+        label=_("Valid until"),
         help_text=_("Leave empty for coupons that never expire")
     )
-    prefix = forms.CharField(label="Prefix", required=False)
+    prefix = forms.CharField(
+        required=False,
+        label="Prefix",
+    )
     campaign = forms.ModelChoiceField(
-        label=_("Campaign"), queryset=Campaign.objects.all(), required=False
+        required=False,
+        queryset=Campaign.objects.all(),
+        label=_("Campaign"),
     )
 
 
 class CouponForm(forms.Form):
-    code = forms.CharField(label=_("Coupon code"))
+    code = forms.CharField(
+        label=_("Coupon code"),
+    )
 
     def __init__(self, *args, **kwargs):
         self.user = None
         self.types = None
-        if 'user' in kwargs:
-            self.user = kwargs['user']
-            del kwargs['user']
-        if 'types' in kwargs:
-            self.types = kwargs['types']
-            del kwargs['types']
+        if "user" in kwargs:
+            self.user = kwargs["user"]
+            del kwargs["user"]
+        if "types" in kwargs:
+            self.types = kwargs["types"]
+            del kwargs["types"]
         super(CouponForm, self).__init__(*args, **kwargs)
 
     def clean_code(self):
-        code = self.cleaned_data['code']
+        code = self.cleaned_data["code"]
         try:
             coupon = Coupon.objects.get(code=code)
         except Coupon.DoesNotExist:

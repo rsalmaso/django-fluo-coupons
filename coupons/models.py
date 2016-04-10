@@ -94,19 +94,45 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
 
 @python_2_unicode_compatible
 class Coupon(models.Model):
-    value = models.IntegerField(_("Value"), help_text=_("Arbitrary coupon value"))
     objects = CouponManager()
 
+    value = models.IntegerField(
+        verbose_name=_("Value"),
+        help_text=_("Arbitrary coupon value"),
+    )
     code = models.CharField(
-        _("Code"), max_length=30, unique=True, blank=True,
-        help_text=_("Leaving this field empty will generate a random code."))
-    type = models.CharField(_("Type"), max_length=20, choices=COUPON_TYPES)
-    user_limit = models.PositiveIntegerField(_("User limit"), default=1)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+        max_length=30,
+        unique=True,
+        blank=True,
+        verbose_name=_("Code"),
+        help_text=_("Leaving this field empty will generate a random code."),
+    )
+    type = models.CharField(
+        max_length=20,
+        choices=COUPON_TYPES,
+        verbose_name=_("Type"),
+    )
+    user_limit = models.PositiveIntegerField(
+        default=1,
+        verbose_name=_("User limit"),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Created at"),
+    )
     valid_until = models.DateTimeField(
-        _("Valid until"), blank=True, null=True,
-        help_text=_("Leave empty for coupons that never expire"))
-    campaign = models.ForeignKey('Campaign', verbose_name=_("Campaign"), blank=True, null=True, related_name='coupons')
+        verbose_name=_("Valid until"),
+        blank=True,
+        null=True,
+        help_text=_("Leave empty for coupons that never expire"),
+    )
+    campaign = models.ForeignKey(
+        "Campaign",
+        verbose_name=_("Campaign"),
+        blank=True,
+        null=True,
+        related_name="coupons",
+    )
 
     class Meta:
         ordering = ['created_at']
@@ -163,8 +189,15 @@ class Coupon(models.Model):
 
 @python_2_unicode_compatible
 class Campaign(models.Model):
-    name = models.CharField(_("Name"), max_length=255, unique=True)
-    description = models.TextField(_("Description"), blank=True)
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name=_("Name"),
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name=_("Description"),
+    )
 
     class Meta:
         ordering = ['name']
@@ -177,12 +210,27 @@ class Campaign(models.Model):
 
 @python_2_unicode_compatible
 class CouponUser(models.Model):
-    coupon = models.ForeignKey(Coupon, related_name='users')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), null=True, blank=True)
-    redeemed_at = models.DateTimeField(_("Redeemed at"), blank=True, null=True)
+    coupon = models.ForeignKey(
+        Coupon,
+        on_delete=models.CASCADE,
+        related_name="users",
+        verbose_name=_("Coupon"),
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("User"),
+    )
+    redeemed_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Redeemed at"),
+    )
 
     class Meta:
-        unique_together = (('coupon', 'user'),)
+        unique_together = [("coupon", "user")]
         verbose_name = _("Coupon")
         verbose_name_plural = _("Coupons")
 
