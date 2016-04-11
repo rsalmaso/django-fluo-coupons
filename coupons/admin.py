@@ -30,12 +30,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic.base import TemplateView
 from django.contrib import admin
-from django.contrib import messages
 
-from .forms import CouponGenerationForm
 from .models import Coupon, CouponUser, Campaign
+from . import views
 
 
 class CouponUserInline(admin.TabularInline):
@@ -64,37 +62,10 @@ class CouponAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(CouponAdmin, self).get_urls()
         my_urls = [
-            url(r"^generate-coupons$", self.admin_site.admin_view(GenerateCouponsAdminView.as_view()), name="generate_coupons"),
+            url(r"^generate-coupons$", self.admin_site.admin_view(views.GenerateCouponsAdminView.as_view()), name="generate_coupons"),
         ]
         return my_urls + urls
 admin.site.register(Coupon, CouponAdmin)
-
-
-class GenerateCouponsAdminView(TemplateView):
-    template_name = "admin/coupons/generate_coupons.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(GenerateCouponsAdminView, self).get_context_data(**kwargs)
-        if self.request.method == "POST":
-            form = CouponGenerationForm(self.request.POST)
-            if form.is_valid():
-                context["coupons"] = Coupon.objects.create_coupons(
-                    form.cleaned_data["quantity"],
-                    form.cleaned_data["type"],
-                    form.cleaned_data["value"],
-                    form.cleaned_data["valid_until"],
-                    form.cleaned_data["prefix"],
-                    form.cleaned_data["campaign"],
-                )
-                messages.success(self.request, _("Your coupons have been generated."))
-        else:
-            form = CouponGenerationForm()
-        context["form"] = form
-        return context
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class CampaignAdmin(admin.ModelAdmin):
