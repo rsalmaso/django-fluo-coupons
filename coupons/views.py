@@ -28,36 +28,62 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+import csv
+
+from django.http import StreamingHttpResponse
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
-from django.contrib import messages
 
 from .forms import CouponGenerationForm
 from .models import Coupon
 
 
+class Echo:
+    def write(self, value):
+        return value
+
 class GenerateCouponsAdminView(TemplateView):
     template_name = "admin/coupons/generate_coupons.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(GenerateCouponsAdminView, self).get_context_data(**kwargs)
-        if self.request.method == "POST":
-            form = CouponGenerationForm(self.request.POST)
-            if form.is_valid():
-                context["coupons"] = Coupon.objects.create_coupons(
-                    form.cleaned_data["quantity"],
-                    form.cleaned_data["type"],
-                    form.cleaned_data["value"],
-                    form.cleaned_data["valid_until"],
-                    form.cleaned_data["prefix"],
-                    form.cleaned_data["campaign"],
-                )
-                messages.success(self.request, _("Your coupons have been generated."))
-        else:
-            form = CouponGenerationForm()
-        context["form"] = form
-        return context
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context["form"] = CouponGenerationForm()
+        return self.render_to_response(context)
+
+    def get_elements_as_csv(self, coupons):
+        count = 0
+        yield [_("Count"), _("ID"), _("Code"), _("Value"), _("Expiration Date"), _("Campaign")]
+        for item in coupons:
+            count += 1
+            yield self.to_csv(count, item)
+
+    def to_csv(self, count, coupon):
+        return [
+            count,
+            coupon.pk,
+            coupon.code,
+            coupon.value,
+            coupon.valid_until.strftime("%Y-%m-%d %H:%M:%S") if coupon.valid_until else "",
+            coupon.campaign if coupon.campaign else "",
+        ]
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        form = CouponGenerationForm(self.request.POST)
+        if form.is_valid():
+            coupons = Coupon.objects.create_coupons(
+                form.cleaned_data["quantity"],
+                form.cleaned_data["type"],
+                form.cleaned_data["value"],
+                form.cleaned_data["valid_until"],
+                form.cleaned_data["prefix"],
+                form.cleaned_data["campaign"],
+            )
+            buffer = Echo()
+            writer = csv.writer(buffer)
+            response = StreamingHttpResponse((writer.writerow(row) for row in self.get_elements_as_csv(coupons)), content_type="text/csv")
+            response['Content-Disposition'] = "attachment; filename=coupons-{}.csv".format(timezone.now().strftime("-%Y%m%d-%H%M%S"))
+            return response
+        context["form"] = form
         return self.render_to_response(context)
