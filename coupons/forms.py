@@ -30,6 +30,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.admin.widgets import AdminSplitDateTime
 
 from .models import Coupon, CouponUser, Campaign
 from .settings import COUPON_TYPES
@@ -48,6 +49,7 @@ class CouponGenerationForm(forms.Form):
     )
     valid_until = forms.SplitDateTimeField(
         required=False,
+        widget=AdminSplitDateTime,
         label=_("Valid until"),
         help_text=_("Leave empty for coupons that never expire")
     )
