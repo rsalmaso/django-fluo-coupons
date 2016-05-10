@@ -5,76 +5,90 @@
 
 {% block extrastyle %}
 {{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 <style>
-    .actions ul, ul.errorlist {
-        margin: 5px !important;
-    }
-    .actions ul li {
-        list-style-type: none;
-        padding: 5px;
-    }
-    .actions ul li:not(:last-child) {
-        border-bottom: 1px solid #ccc;
-    }
-    #changelist .actions label{
-        margin-left: 0;
-    }
-    #changelist table thead th {
-        padding: 2px 5px;
-    }
+  .actions ul, ul.errorlist {
+      margin: 5px !important;
+  }
+  .actions ul li {
+      list-style-type: none;
+      padding: 5px;
+  }
+  .actions ul li:not(:last-child) {
+      border-bottom: 1px solid #ccc;
+  }
+  #changelist .actions label{
+      margin-left: 0;
+  }
+  #changelist table thead th {
+      padding: 2px 5px;
+  }
 </style>
 {% endblock %}
+
 {% block extrahead %}
 {{ block.super }}
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
 <script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
-{{form.media}}
+{{ form.media }}
 {% endblock %}
+
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-    &rsaquo; <a href="{% url 'admin:app_list' app_label='coupons' %}">{% trans 'Coupons' %}</a>
-    &rsaquo; {% trans "Generate coupons" %}
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label='coupons' %}">{% trans 'Coupons' %}</a>
+  &rsaquo; {% trans "Generate coupons" %}
 </div>
 {% endblock %}
 
 {% block content %}
 <div id="content-main">
-    <div class="module" id="changelist">
-        <form id="changelist-form" action="" method="post">
-            {% csrf_token %}
-            <div class="actions">
-                <ul>
-                    {{form.as_ul}}
-                    <li><input type="submit" value="{% trans "Generate coupons" %}" class=""></li>
-                </ul>
+  <div class="module" id="changelist">
+    <form id="changelist-form" action="" method="post">{% csrf_token %}
+      <div class="form-row">
+        <fieldset class="module aligned">
+          {% for field in form %}
+          <div class="form-row">
+            <div class="field-box field-{{ field.name }}">
+              {{ field.label_tag }}
+              {% if field.is_readonly %}
+              <p>{{ field.contents }}</p>
+              {% else %}
+              {{ field }}
+              {% endif %}
             </div>
-            {% if coupons %}
-            <div class="results">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>{% trans "Id" %}</th>
-                            <th>{% trans "Code" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for coupon in coupons %}
-                            <tr>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{coupon.id}}</td>
-                                <td>{{coupon.code}}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-        </form>
-    </div>
+          </div>
+          {% endfor %}
+        </fieldset>
+      </div>
+      <div class="submit-row">
+        <input type="submit" value="{% trans "Generate coupons" %}" class="" />
+      </div>{% if coupons %}
+
+      <div class="results">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{% trans "Id" %}</th>
+              <th>{% trans "Code" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for coupon in coupons %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ coupon.id }}</td>
+            <td>{{ coupon.code }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>{% endif %}
+    </form>
+  </div>
 </div>
 {% endblock %}
 
