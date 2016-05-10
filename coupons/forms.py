@@ -53,7 +53,7 @@ class CouponGenerationForm(forms.Form):
     )
     prefix = forms.CharField(
         required=False,
-        label="Prefix",
+        label=_("Prefix"),
     )
     campaign = forms.ModelChoiceField(
         required=False,
