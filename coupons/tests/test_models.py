@@ -38,21 +38,21 @@ class CouponTestCase(TestCase):
         self.assertTrue(coupon.pk)
 
     def test_create_coupon(self):
-        coupon = Coupon.objects.create_coupon('monetary', 100)
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100)
         self.assertTrue(coupon.pk)
 
     def test_create_coupons(self):
-        coupons = Coupon.objects.create_coupons(50, 'monetary', 100)
+        coupons = Coupon.objects.create_coupons(quantity=50, type='monetary', value=100)
         for coupon in coupons:
             self.assertTrue(coupon.pk)
 
     def test_redeem(self):
-        coupon = Coupon.objects.create_coupon('monetary', 100)
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100)
         coupon.redeem()
         self.assertIsNotNone(coupon.redeemed_at)
 
     def test_expired(self):
-        coupon = Coupon.objects.create_coupon('monetary', 100)
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100)
         self.assertFalse(coupon.expired())
         self.assertEqual(Coupon.objects.expired().count(), 0)
         coupon.valid_until = timezone.now() - timedelta(1)
@@ -61,15 +61,15 @@ class CouponTestCase(TestCase):
         self.assertEqual(Coupon.objects.expired().count(), 1)
 
     def test_str(self):
-        coupon = Coupon.objects.create_coupon('monetary', 100)
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100)
         self.assertEqual(coupon.code, str(coupon))
 
     def test_prefix(self):
-        coupon = Coupon.objects.create_coupon('monetary', 100, None, None, "prefix-")
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100, users=None, valid_until=None, prefix="prefix-")
         self.assertTrue(coupon.code.startswith("prefix-"))
 
     def test_used_unused(self):
-        coupon = Coupon.objects.create_coupon('monetary', 100)
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100)
         self.assertEqual(Coupon.objects.used().count(), 0)
         self.assertEqual(Coupon.objects.unused().count(), 1)
         coupon.redeem()
