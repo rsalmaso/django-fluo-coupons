@@ -10,7 +10,7 @@ from coupons.models import Coupon
 
 class DefaultCouponTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="user1")
+        self.user = User.objects.create_user(username="user1")
         self.coupon = Coupon.objects.create_coupon('monetary', 100)
 
     def test_redeem(self):
@@ -51,7 +51,7 @@ class DefaultCouponTestCase(TestCase):
 
 class SingleUserCouponTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="user1")
+        self.user = User.objects.create_user(username="user1")
         self.coupon = Coupon.objects.create_coupon('monetary', 100, self.user)
 
     def test_user_limited_coupon(self):
@@ -90,7 +90,7 @@ class SingleUserCouponTestCase(TestCase):
 
 class UnlimitedCouponTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create(username="user1")
+        self.user = User.objects.create_user(username="user1")
         self.coupon = Coupon.objects.create_coupon('monetary', 100, user_limit=0)
 
     def test_redeem_with_user(self):
@@ -104,7 +104,7 @@ class UnlimitedCouponTestCase(TestCase):
 
     def test_redeem_with_multiple_users(self):
         for i in range(100):
-            user = User.objects.create(username="test%s" % (i))
+            user = User.objects.create_user(username="test%s" % (i))
             form = CouponForm(data={'code': self.coupon.code}, user=user)
             self.assertTrue(form.is_valid())
 
