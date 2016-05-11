@@ -117,16 +117,16 @@ class Coupon(models.TimestampModel):
         verbose_name=_("User limit"),
     )
     valid_until = models.DateTimeField(
-        verbose_name=_("Valid until"),
         blank=True,
         null=True,
+        verbose_name=_("Valid until"),
         help_text=_("Leave empty for coupons that never expire"),
     )
     campaign = models.ForeignKey(
         "Campaign",
-        verbose_name=_("Campaign"),
         blank=True,
         null=True,
+        verbose_name=_("Campaign"),
         related_name="coupons",
     )
 
