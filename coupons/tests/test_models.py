@@ -60,6 +60,39 @@ class CouponTestCase(TestCase):
         self.assertTrue(coupon.expired())
         self.assertEqual(Coupon.objects.expired().count(), 1)
 
+    def test_coupon_already_active_and_not_yet_expired(self):
+        now = timezone.now()
+        coupon = Coupon.objects.create_coupon(
+            type='monetary',
+            value=100,
+            valid_from=now - timedelta(1),
+            valid_until=now + timedelta(2),
+        )
+        self.assertFalse(coupon.expired())
+        self.assertEqual(Coupon.objects.active().count(), 1)
+
+    def test_coupon_with_no_initial_date_and_not_yet_expired(self):
+        now = timezone.now()
+        coupon = Coupon.objects.create_coupon(
+            type='monetary',
+            value=100,
+            valid_from=None,
+            valid_until=now + timedelta(2),
+        )
+        self.assertFalse(coupon.expired())
+        self.assertEqual(Coupon.objects.active().count(), 1)
+
+    def coupon_not_yet_active_and_not_yet_expired(self):
+        now = timezone.now()
+        coupon = Coupon.objects.create_coupon(
+            type='monetary',
+            value=100,
+            valid_from=now + timedelta(1),
+            valid_until=now + timedelta(2),
+        )
+        self.assertFalse(coupon.expired())
+        self.assertEqual(Coupon.objects.active().count(), 0)
+
     def test_str(self):
         coupon = Coupon.objects.create_coupon(type='monetary', value=100)
         self.assertEqual(coupon.code, str(coupon))

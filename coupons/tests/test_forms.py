@@ -59,6 +59,33 @@ class CouponFormTestCase(TestCase):
         form = CouponForm(data=form_data, user=self.user)
         self.assertFalse(form.is_valid())
 
+    def test_coupon_already_active_and_not_yet_expired(self):
+        now = timezone.now()
+        self.coupon.valid_from = now - timedelta(1)
+        self.coupon.valid_until = now + timedelta(2)
+        self.coupon.save()
+        form_data = {'code': self.coupon.code}
+        form = CouponForm(data=form_data, user=self.user)
+        self.assertTrue(form.is_valid())
+
+    def test_coupon_with_no_initial_date_and_not_yet_expired(self):
+        now = timezone.now()
+        self.coupon.valid_from = None
+        self.coupon.valid_until = now + timedelta(2)
+        self.coupon.save()
+        form_data = {'code': self.coupon.code}
+        form = CouponForm(data=form_data, user=self.user)
+        self.assertTrue(form.is_valid())
+
+    def coupon_not_yet_active_and_not_yet_expired(self):
+        now = timezone.now()
+        self.coupon.valid_from = now + timedelta(1)
+        self.coupon.valid_until = now + timedelta(2)
+        self.coupon.save()
+        form_data = {'code': self.coupon.code}
+        form = CouponForm(data=form_data, user=self.user)
+        self.assertFalse(form.is_valid())
+
 
 class UnboundCouponFormTestCase(TestCase):
     def setUp(self):

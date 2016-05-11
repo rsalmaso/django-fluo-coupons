@@ -32,6 +32,7 @@ import random
 
 from django.conf import settings
 from django.db import IntegrityError
+from django.db.models import Q
 from django.dispatch import Signal
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
@@ -60,6 +61,12 @@ class CouponQuerySet(models.QuerySet):
 
     def expired(self):
         return self.filter(valid_until__lt=timezone.now())
+
+    def active(self):
+        now = timezone.now()
+        q1 = Q(Q(valid_from__isnull=True)|Q(valid_from__lte=now))
+        q2 = Q(Q(valid_until__isnull=True)|Q(valid_until__gte=now))
+        return self.filter(q1 & q2)
 
 
 class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
