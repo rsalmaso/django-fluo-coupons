@@ -51,7 +51,7 @@ class CouponGenerationForm(forms.Form):
         required=False,
         widget=AdminSplitDateTime,
         label=_("Valid until"),
-        help_text=_("Leave empty for coupons that never expire")
+        help_text=_("Coupons expire at this date"),
     )
     prefix = forms.CharField(
         required=False,

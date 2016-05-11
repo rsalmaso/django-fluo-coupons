@@ -120,7 +120,7 @@ class Coupon(models.TimestampModel):
         blank=True,
         null=True,
         verbose_name=_("Valid until"),
-        help_text=_("Leave empty for coupons that never expire"),
+        help_text=_("Coupons expire at this date"),
     )
     campaign = models.ForeignKey(
         "Campaign",
