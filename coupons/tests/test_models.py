@@ -65,7 +65,7 @@ class CouponTestCase(TestCase):
         self.assertEqual(coupon.code, str(coupon))
 
     def test_prefix(self):
-        coupon = Coupon.objects.create_coupon(type='monetary', value=100, users=None, valid_until=None, prefix="prefix-")
+        coupon = Coupon.objects.create_coupon(type='monetary', value=100, users=None, valid_from=None, valid_until=None, prefix="prefix-")
         self.assertTrue(coupon.code.startswith("prefix-"))
 
     def test_used_unused(self):

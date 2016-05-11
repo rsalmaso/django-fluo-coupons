@@ -47,6 +47,12 @@ class CouponGenerationForm(forms.Form):
         choices=COUPON_TYPES,
         label=_("Type"),
     )
+    valid_from = forms.SplitDateTimeField(
+        required=False,
+        widget=AdminSplitDateTime,
+        label=_("Valid from"),
+        help_text=_("Coupons are valid from this date"),
+    )
     valid_until = forms.SplitDateTimeField(
         required=False,
         widget=AdminSplitDateTime,

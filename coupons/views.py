@@ -53,7 +53,7 @@ class GenerateCouponsAdminView(TemplateView):
 
     def get_elements_as_csv(self, coupons):
         count = 0
-        yield [_("Count"), _("ID"), _("Code"), _("Value"), _("Expiration Date"), _("Campaign")]
+        yield [_("Count"), _("ID"), _("Code"), _("Value"), _("Start Date"), _("Expiration Date"), _("Campaign")]
         for item in coupons:
             count += 1
             yield self.to_csv(count, item)
@@ -64,6 +64,7 @@ class GenerateCouponsAdminView(TemplateView):
             coupon.pk,
             coupon.code,
             coupon.value,
+            coupon.valid_from.strftime("%Y-%m-%d %H:%M:%S") if coupon.valid_from else "",
             coupon.valid_until.strftime("%Y-%m-%d %H:%M:%S") if coupon.valid_until else "",
             coupon.campaign if coupon.campaign else "",
         ]
@@ -76,6 +77,7 @@ class GenerateCouponsAdminView(TemplateView):
                 form.cleaned_data["quantity"],
                 form.cleaned_data["type"],
                 form.cleaned_data["value"],
+                form.cleaned_data["valid_from"],
                 form.cleaned_data["valid_until"],
                 form.cleaned_data["prefix"],
                 form.cleaned_data["campaign"],

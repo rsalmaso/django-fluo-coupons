@@ -63,11 +63,12 @@ class CouponQuerySet(models.QuerySet):
 
 
 class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
-    def create_coupon(self, type, value, users=[], valid_until=None, prefix="", campaign=None, user_limit=None):
+    def create_coupon(self, type, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None):
         coupon = self.create(
             value=value,
             code=Coupon.generate_code(prefix),
             type=type,
+            valid_from=valid_from,
             valid_until=valid_until,
             campaign=campaign,
         )
@@ -77,7 +78,7 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
             coupon.save()
         except IntegrityError:
             # Try again with other code
-            coupon = Coupon.objects.create_coupon(type, value, users, valid_until, prefix, campaign)
+            coupon = Coupon.objects.create_coupon(type, value, users, valid_from, valid_until, prefix, campaign)
         if not isinstance(users, list):
             users = [users]
         for user in users:
@@ -85,10 +86,10 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
                 CouponUser(user=user, coupon=coupon).save()
         return coupon
 
-    def create_coupons(self, quantity, type, value, valid_until=None, prefix="", campaign=None):
+    def create_coupons(self, quantity, type, value, valid_from=None, valid_until=None, prefix="", campaign=None):
         coupons = []
         for i in range(quantity):
-            coupons.append(self.create_coupon(type, value, None, valid_until, prefix, campaign))
+            coupons.append(self.create_coupon(type, value, None, valid_from, valid_until, prefix, campaign))
         return coupons
 
 
@@ -115,6 +116,12 @@ class Coupon(models.TimestampModel):
     user_limit = models.PositiveIntegerField(
         default=1,
         verbose_name=_("User limit"),
+    )
+    valid_from = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Valid from"),
+        help_text=_("Coupons are valid from this date"),
     )
     valid_until = models.DateTimeField(
         blank=True,

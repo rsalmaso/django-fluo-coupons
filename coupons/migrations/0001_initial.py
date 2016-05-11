@@ -53,9 +53,9 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Description')),
             ],
             options={
-                'verbose_name': 'Campaign',
                 'ordering': ['name'],
                 'verbose_name_plural': 'Campaigns',
+                'verbose_name': 'Campaign',
             },
         ),
         migrations.CreateModel(
@@ -68,13 +68,14 @@ class Migration(migrations.Migration):
                 ('code', models.CharField(blank=True, help_text='Leaving this field empty will generate a random code.', max_length=30, unique=True, verbose_name='Code')),
                 ('type', models.CharField(choices=[('monetary', 'Money based coupon'), ('percentage', 'Percentage discount'), ('virtual_currency', 'Virtual currency')], max_length=20, verbose_name='Type')),
                 ('user_limit', models.PositiveIntegerField(default=1, verbose_name='User limit')),
-                ('valid_until', models.DateTimeField(blank=True, help_text='Leave empty for coupons that never expire', null=True, verbose_name='Valid until')),
+                ('valid_from', models.DateTimeField(blank=True, help_text='Coupons are valid from this date', null=True, verbose_name='Valid from')),
+                ('valid_until', models.DateTimeField(blank=True, help_text='Coupons expire at this date', null=True, verbose_name='Valid until')),
                 ('campaign', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='coupons', to='coupons.Campaign', verbose_name='Campaign')),
             ],
             options={
-                'verbose_name': 'Coupon',
                 'ordering': ['created_at'],
                 'verbose_name_plural': 'Coupons',
+                'verbose_name': 'Coupon',
             },
         ),
         migrations.CreateModel(
@@ -86,8 +87,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='User')),
             ],
             options={
-                'verbose_name': 'Coupon',
                 'verbose_name_plural': 'Coupons',
+                'verbose_name': 'Coupon',
             },
         ),
         migrations.AlterUniqueTogether(
