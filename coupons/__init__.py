@@ -27,7 +27,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__version__ = '1.2.0a5'
+from .version import get_version
+
+VERSION = (1, 2, 0, "alpha", 5)
+
+__version__  = get_version(VERSION)
+__author__  = "Raffaele Salmaso"
+__email__ = "raffaele@salmaso.org"
 
 
 def get_coupon_types():
