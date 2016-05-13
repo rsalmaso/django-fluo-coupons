@@ -29,11 +29,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 from django.conf.urls import url
+from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
 from .models import Coupon, CouponUser, Campaign
 from . import views
+from . import get_coupon_types
 
 
 class CouponUserInline(admin.TabularInline):
@@ -46,7 +48,19 @@ class CouponUserInline(admin.TabularInline):
         return None  # disable limit for new objects (e.g. admin add)
 
 
+class CouponAdminForm(forms.ModelForm):
+    type = forms.ChoiceField(
+        choices=get_coupon_types,
+        label=_("Type"),
+    )
+
+    class Meta:
+        model = Coupon
+        fields = "__all__"
+
+
 class CouponAdmin(admin.ModelAdmin):
+    form = CouponAdminForm
     list_display = [
         "created_at", "code", "type", "value", "user_count", "user_limit", "is_redeemed", "valid_until", "campaign"
     ]
