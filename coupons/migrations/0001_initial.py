@@ -54,8 +54,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['name'],
-                'verbose_name_plural': 'Campaigns',
                 'verbose_name': 'Campaign',
+                'verbose_name_plural': 'Campaigns',
             },
         ),
         migrations.CreateModel(
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                 ('last_modified_at', fluo.db.models.fields.ModificationDateTimeField(blank=True, default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('value', models.IntegerField(help_text='Arbitrary coupon value', verbose_name='Value')),
                 ('code', models.CharField(blank=True, help_text='Leaving this field empty will generate a random code.', max_length=30, unique=True, verbose_name='Code')),
-                ('type', models.CharField(choices=[('monetary', 'Money based coupon'), ('percentage', 'Percentage discount'), ('virtual_currency', 'Virtual currency')], max_length=20, verbose_name='Type')),
+                ('type', models.CharField(max_length=20, verbose_name='Type')),
                 ('user_limit', models.PositiveIntegerField(default=1, verbose_name='User limit')),
                 ('valid_from', models.DateTimeField(blank=True, help_text='Coupons are valid from this date', null=True, verbose_name='Valid from')),
                 ('valid_until', models.DateTimeField(blank=True, help_text='Coupons expire at this date', null=True, verbose_name='Valid until')),
@@ -74,8 +74,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['created_at'],
-                'verbose_name_plural': 'Coupons',
                 'verbose_name': 'Coupon',
+                'verbose_name_plural': 'Coupons',
             },
         ),
         migrations.CreateModel(
@@ -87,8 +87,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='User')),
             ],
             options={
-                'verbose_name_plural': 'Coupons',
                 'verbose_name': 'Coupon',
+                'verbose_name_plural': 'Coupons',
             },
         ),
         migrations.AlterUniqueTogether(

@@ -40,7 +40,6 @@ from django.utils.translation import ugettext_lazy as _
 from fluo.db import models
 
 from .settings import (
-    COUPON_TYPES,
     CODE_LENGTH,
     CODE_CHARS,
     SEGMENTED_CODES,
@@ -117,7 +116,6 @@ class Coupon(models.TimestampModel):
     )
     type = models.CharField(
         max_length=20,
-        choices=COUPON_TYPES,
         verbose_name=_("Type"),
     )
     user_limit = models.PositiveIntegerField(
