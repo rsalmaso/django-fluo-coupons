@@ -28,3 +28,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 __version__ = '1.2.0a5'
+
+
+def get_coupon_types():
+    from .settings import COUPON_TYPES
+    return COUPON_TYPES
