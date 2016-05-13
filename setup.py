@@ -1,20 +1,21 @@
-import os
+import io
 from setuptools import setup, find_packages
 
 import coupons
 
 
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+with io.open('README.md', "rt", encoding='utf-8') as fp:
+    long_description = fp.read()
+
 
 setup(
     name="django-fluo-coupons",
     version=coupons.__version__,
     description="A reuseable Django application for coupon gereration and handling.",
-    long_description=read("README.md"),
-    license=read("LICENSE"),
-    author="Raffaele Salmaso",
-    author_email="raffaele@salmaso.org",
+    long_description=long_description,
+    license="BSD",
+    author=coupons.__author__,
+    author_email=coupons.__email__,
     url="https://bitbucket.org/rsalmaso/django-fluo-coupons",
     include_package_data=True,
     packages=find_packages(),
