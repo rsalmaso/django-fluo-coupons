@@ -236,6 +236,22 @@ class CouponUser(models.Model):
         null=True,
         verbose_name=_("Redeemed at"),
     )
+    source_type = models.ForeignKey(
+        models.ContentType,
+        db_index=True,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("source content type"),
+    )
+    source_id = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("source id"),
+    )
+    source = models.GenericForeignKey(
+        "source_type", "source_id",
+    )
 
     class Meta:
         unique_together = [("coupon", "user")]
