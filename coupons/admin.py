@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from django.conf.urls import url
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import admin
+from fluo import admin
 
 from .models import Coupon, CouponUser, Campaign
 from . import views
