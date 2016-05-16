@@ -38,14 +38,8 @@ from . import views
 from . import get_coupon_types
 
 
-class CouponUserInline(admin.TabularInline):
+class CouponUserInline(admin.ReadOnlyTabularInline):
     model = CouponUser
-    extra = 0
-
-    def get_max_num(self, request, obj=None, **kwargs):
-        if obj:
-            return obj.user_limit
-        return None  # disable limit for new objects (e.g. admin add)
 
 
 class CouponAdminForm(forms.ModelForm):
