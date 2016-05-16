@@ -63,6 +63,10 @@ class CouponAdmin(admin.ModelAdmin):
     search_fields = ["code", "value"]
     inlines = [CouponUserInline]
     exclude = ["users"]
+    related_search_fields = {
+        "user": ("pk", "username", "first_name", "last_name", "email"),
+        "campaign": ("pk", "name"),
+    }
 
     def user_count(self, inst):
         return inst.users.count()
