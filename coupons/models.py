@@ -51,6 +51,27 @@ from .settings import (
 redeem_done = Signal(providing_args=["coupon"])
 
 
+@python_2_unicode_compatible
+class Campaign(models.Model):
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name=_("Name"),
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name=_("Description"),
+    )
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _("Campaign")
+        verbose_name_plural = _("Campaigns")
+
+    def __str__(self):
+        return self.name
+
+
 class CouponQuerySet(models.QuerySet):
     def used(self):
         return self.exclude(users__redeemed_at__isnull=True)
@@ -135,7 +156,7 @@ class Coupon(models.TimestampModel):
         help_text=_("Coupons expire at this date"),
     )
     campaign = models.ForeignKey(
-        "Campaign",
+        Campaign,
         blank=True,
         null=True,
         verbose_name=_("Campaign"),
@@ -193,27 +214,6 @@ class Coupon(models.TimestampModel):
         coupon_user.redeemed_at = timezone.now()
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
-
-
-@python_2_unicode_compatible
-class Campaign(models.Model):
-    name = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("Name"),
-    )
-    description = models.TextField(
-        blank=True,
-        verbose_name=_("Description"),
-    )
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = _("Campaign")
-        verbose_name_plural = _("Campaigns")
-
-    def __str__(self):
-        return self.name
 
 
 @python_2_unicode_compatible
