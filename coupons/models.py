@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 
 from django.conf import settings
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.dispatch import Signal
 from django.utils.encoding import python_2_unicode_compatible
@@ -122,6 +122,12 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
 
 @python_2_unicode_compatible
 class Coupon(models.TimestampModel):
+    class CouponError(Exception):
+        pass
+
+    class UserLimitError(CouponError):
+        pass
+
     objects = CouponManager()
 
     value = models.IntegerField(
@@ -202,21 +208,19 @@ class Coupon(models.TimestampModel):
         else:
             return prefix + code
 
-    def redeem(self, user=None):
-        try:
-            coupon_user = self.users.get(user=user)
-        except CouponUser.DoesNotExist:
-            try:  # silently fix unbouned or nulled coupon users
-                coupon_user = self.users.get(user__isnull=True)
-                coupon_user.user = user
-            except CouponUser.DoesNotExist:
-                coupon_user = CouponUser(coupon=self, user=user)
     @property
     def is_usable(self):
         user_limit = self.user_limit
         return -1 < CouponUser.objects.filter(coupon=self).count() < user_limit
 
+    @transaction.atomic
+    def redeem(self, user=None):
+        if not self.is_usable:
+            raise Coupon.UserLimitError()
+
+        coupon_user = CouponUser(coupon=self, user=user)
         coupon_user.redeemed_at = timezone.now()
+
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
 
