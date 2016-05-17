@@ -94,8 +94,4 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Coupon',
             },
         ),
-        migrations.AlterUniqueTogether(
-            name='couponuser',
-            unique_together=set([('coupon', 'user')]),
-        ),
     ]
