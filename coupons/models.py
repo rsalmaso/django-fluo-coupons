@@ -119,6 +119,10 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
             coupons.append(self.create_coupon(type, value, None, valid_from, valid_until, prefix, campaign))
         return coupons
 
+    def redeem(self, code, user, source=None):
+        coupon = self.active().get(code=code)
+        return coupon.redeem(user=user, source=source)
+
 
 @python_2_unicode_compatible
 class Coupon(models.TimestampModel):
