@@ -32,8 +32,9 @@ import csv
 
 from django.http import StreamingHttpResponse
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
-from django.views.generic.base import TemplateView
+from django.utils.translation import ugettext_lazy as _, ugettext
+from django.views.generic.base import TemplateView, View
+from fluo.http import JsonResponse
 
 from .forms import CouponGenerationForm
 from .models import Coupon
@@ -89,3 +90,25 @@ class GenerateCouponsAdminView(TemplateView):
             return response
         context["form"] = form
         return self.render_to_response(context)
+
+
+class CheckCouponView(View):
+    def post(self, request):
+        if request.user.is_authenticated():
+            status, message, data = 404, ugettext("not found"), {}
+            code = request.POST.get("code", None)
+            if code:
+                try:
+                    coupon = Coupon.objects.active().get(code=code)
+                    #coupon = Coupon.objects.get(code=code)
+                    if coupon.is_usable:
+                        status, message, data = 200, ugettext("ok"), {
+                            "value": coupon.value,
+                            "code": coupon.code,
+                            "type": coupon.type,
+                        }
+                except Coupon.DoesNotExist:
+                    pass
+        else:
+            status, message, data = 403, ugettext("forbidden"), {}
+        return JsonResponse({"status": status, "message": message, "data": data}, status=status)
