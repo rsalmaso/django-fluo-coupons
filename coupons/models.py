@@ -211,6 +211,11 @@ class Coupon(models.TimestampModel):
                 coupon_user.user = user
             except CouponUser.DoesNotExist:
                 coupon_user = CouponUser(coupon=self, user=user)
+    @property
+    def is_usable(self):
+        user_limit = self.user_limit
+        return -1 < CouponUser.objects.filter(coupon=self).count() < user_limit
+
         coupon_user.redeemed_at = timezone.now()
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
