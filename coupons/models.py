@@ -214,12 +214,15 @@ class Coupon(models.TimestampModel):
         return -1 < CouponUser.objects.filter(coupon=self).count() < user_limit
 
     @transaction.atomic
-    def redeem(self, user=None):
+    def redeem(self, user=None, source=None):
         if not self.is_usable:
             raise Coupon.UserLimitError()
 
         coupon_user = CouponUser(coupon=self, user=user)
         coupon_user.redeemed_at = timezone.now()
+        if source is not None:
+            coupon_user.source_type = models.ContentType.objects.get_for_model(source)
+            coupon_user.source_id = source.pk
 
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
