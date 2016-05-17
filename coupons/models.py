@@ -220,6 +220,8 @@ class Coupon(models.TimestampModel):
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
 
+        return coupon_user
+
 
 @python_2_unicode_compatible
 class CouponUser(models.Model):
