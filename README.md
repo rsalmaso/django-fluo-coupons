@@ -1,8 +1,24 @@
-#django-coupons
-
-![build status](https://travis-ci.org/byteweaver/django-coupons.png)
+# django-fluo-coupons
 
 A reuseable Django application for coupon gereration and handling
+This is a customized fork of https://github.com/byteweaver/django-coupons.git
+
+
+## Setup instructions
+
+1. Install `django-fluo-coupons` via pip:
+   ```
+   $ python3 -m pip install django-fluo-coupons
+   -
+   ```
+
+2. Add `'coupons'` to `INSTALLED_APPS` in `settings.py`.
+
+3. Migrate database:
+
+   ```
+   $ python3 manage.py migrate
+   ```
 
 ## Supported use cases of coupons
 
@@ -15,22 +31,25 @@ The difference is defined by the number of possible redeems and if they are boun
     4) users list, coupon can be used by a defined list of users, each once.
     5) unlimited, coupon can be used unlimited times, but only once by the same user.
 
-##Contributors
+## Contributors
 (alphabetical order)
 
 * @akuryou
 * @ikresoft
+* @marshallds
 * @noxan
 * @TigerDX
 * @TimFletcher
 
-##Changelog
+## Changelog
 
-###V 1.2.0
+### V 1.2.0
 
-* Drop support for Django 1.4 and 1.5
+* Drop support for Django < 1.8
+* Drop pyhon2 support
+* Can save generate codes in csv file
 
-###V 1.1.0
+### V 1.1.0
  * campaigns
    Coupons may now be associated with campaigns for better tracking
  * segmented coupon codes
@@ -47,23 +66,23 @@ The difference is defined by the number of possible redeems and if they are boun
  * django 1.8 now officially supported
  * minor fixes
 
-###V 1.0.4
+### V 1.0.4
 redeem_done signal
 
-###V 1.0.3
+### V 1.0.3
 Typo and CouponForm fix.
 
-###V 1.0.2
+### V 1.0.2
 Fixed Typo in settings.
 * COUPNS_CODE_LENGTH -> COUPONS_CODE_LENGTH
 * COUPNS_CODE_CHARS -> COUPONS_CODE_CHARS
 
 *Check your settings after updating!*
 
-###V 1.0.1
+### V 1.0.1
 add django 1.7 migrations and south legacy migrations
 
-###V 1.0.0
+### V 1.0.0
 Supports:
 * django 1.4 - 1.7
 * python 2.7, 3.4
