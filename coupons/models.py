@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2013, byteweaver
 # All rights reserved.
@@ -27,14 +25,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import random
 
 from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.dispatch import Signal
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from fluo.db import models
@@ -51,7 +47,6 @@ from .settings import (
 redeem_done = Signal(providing_args=["coupon"])
 
 
-@python_2_unicode_compatible
 class Campaign(models.Model):
     name = models.CharField(
         max_length=255,
@@ -124,7 +119,6 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
         return coupon.redeem(user=user, source=source)
 
 
-@python_2_unicode_compatible
 class Coupon(models.TimestampModel):
     class CouponError(Exception):
         pass
@@ -184,7 +178,7 @@ class Coupon(models.TimestampModel):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = Coupon.generate_code()
-        super(Coupon, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def expired(self):
         return self.valid_until is not None and self.valid_until < timezone.now()
@@ -234,7 +228,6 @@ class Coupon(models.TimestampModel):
         return coupon_user
 
 
-@python_2_unicode_compatible
 class CouponUser(models.Model):
     coupon = models.ForeignKey(
         Coupon,

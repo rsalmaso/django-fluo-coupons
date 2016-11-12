@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2013, byteweaver
 # All rights reserved.
@@ -27,7 +25,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import string
 
 from django.conf import settings

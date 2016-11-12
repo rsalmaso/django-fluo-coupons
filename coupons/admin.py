@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2013, byteweaver
 # All rights reserved.
@@ -27,7 +25,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 from django.conf.urls import url
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -72,7 +69,7 @@ class CouponAdmin(admin.ModelAdmin):
         return inst.users.count()
 
     def get_urls(self):
-        urls = super(CouponAdmin, self).get_urls()
+        urls = super().get_urls()
         my_urls = [
             url(r"^generate-coupons$", self.admin_site.admin_view(views.GenerateCouponsAdminView.as_view()), name="generate_coupons"),
         ]

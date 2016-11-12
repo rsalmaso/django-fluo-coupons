@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2013, byteweaver
 # All rights reserved.
@@ -27,7 +25,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin.widgets import AdminSplitDateTime
@@ -84,7 +81,7 @@ class CouponForm(forms.Form):
         if "types" in kwargs:
             self.types = kwargs["types"]
             del kwargs["types"]
-        super(CouponForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_code(self):
         code = self.cleaned_data["code"]
