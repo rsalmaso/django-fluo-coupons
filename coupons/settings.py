@@ -1,4 +1,4 @@
-# Copyright (C) 2016, Raffaele Salmaso <raffaele@salmaso.org>
+# Copyright (C) 2016-2017, Raffaele Salmaso <raffaele@salmaso.org>
 # Copyright (C) 2013, byteweaver
 # All rights reserved.
 #
