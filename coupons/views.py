@@ -89,9 +89,16 @@ class GenerateCouponsAdminView(TemplateView):
         return self.render_to_response(context)
 
 
+def is_authenticated(user):
+    import django
+    if django.VERSION < (1, 10):
+        return user.is_authenticated()
+    return user.is_authenticated
+
+
 class CheckCouponView(View):
     def post(self, request):
-        if request.user.is_authenticated():
+        if is_authenticated(request.user):
             status, message, data = 404, ugettext("not found"), {}
             code = request.POST.get("code", None)
             if code:
