@@ -50,6 +50,7 @@ class CouponAdminForm(forms.ModelForm):
         fields = "__all__"
 
 
+@admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
     form = CouponAdminForm
     list_display = [
@@ -74,9 +75,9 @@ class CouponAdmin(admin.ModelAdmin):
             url(r"^generate-coupons$", self.admin_site.admin_view(views.GenerateCouponsAdminView.as_view()), name="generate_coupons"),
         ]
         return my_urls + urls
-admin.site.register(Coupon, CouponAdmin)
 
 
+@admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
     list_display = ["name", "num_coupons", "num_coupons_used", "num_coupons_unused", "num_coupons_expired"]
 
@@ -95,4 +96,3 @@ class CampaignAdmin(admin.ModelAdmin):
     def num_coupons_expired(self, obj):
         return obj.coupons.expired().count()
     num_coupons_expired.short_description = _("expired")
-admin.site.register(Campaign, CampaignAdmin)
