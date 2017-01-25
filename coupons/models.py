@@ -164,8 +164,8 @@ class Coupon(models.TimestampModel):
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        verbose_name=_("Campaign"),
         related_name="coupons",
+        verbose_name=_("Campaign"),
     )
 
     class Meta:
