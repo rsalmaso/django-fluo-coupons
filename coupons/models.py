@@ -47,7 +47,7 @@ from .settings import (
 redeem_done = Signal(providing_args=["coupon"])
 
 
-class Campaign(models.Model):
+class Campaign(models.TimestampModel):
     name = models.CharField(
         max_length=255,
         unique=True,
@@ -229,7 +229,7 @@ class Coupon(models.TimestampModel):
         return coupon_user
 
 
-class CouponUser(models.Model):
+class CouponUser(models.TimestampModel):
     coupon = models.ForeignKey(
         Coupon,
         on_delete=models.CASCADE,
