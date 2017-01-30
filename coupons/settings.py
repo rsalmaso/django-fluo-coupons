@@ -29,11 +29,13 @@ import string
 
 from django.conf import settings
 
+_ = lambda x: x
+
 
 COUPON_TYPES = getattr(settings, "COUPONS_COUPON_TYPES", (
-    ("monetary", "Money based coupon"),
-    ("percentage", "Percentage discount"),
-    ("virtual_currency", "Virtual currency"),
+    ("monetary", _("Money based coupon")),
+    ("percentage", _("Percentage discount")),
+    ("virtual_currency", _("Virtual currency")),
 ))
 
 CODE_LENGTH = getattr(settings, "COUPONS_CODE_LENGTH", 15)
