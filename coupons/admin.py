@@ -53,9 +53,7 @@ class CouponAdminForm(forms.ModelForm):
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
     form = CouponAdminForm
-    list_display = [
-        "created_at", "code", "type", "value", "user_count", "user_limit", "is_redeemed", "valid_until", "campaign"
-    ]
+    list_display = ["code", "type", "value", "user_count", "user_limit", "is_redeemed", "valid_until", "campaign"]
     list_filter = ["type", "campaign", "created_at", "valid_until"]
     raw_id_fields = []
     search_fields = ["code", "value"]
