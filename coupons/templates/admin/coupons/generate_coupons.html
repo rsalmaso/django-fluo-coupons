@@ -47,6 +47,12 @@
 <div id="content-main">
   <div class="module" id="changelist">
     <form id="changelist-form" action="" method="post">{% csrf_token %}
+      <div class="submit-row">
+        <p class="deletelink-box">
+          <a href="{% url "admin:coupons_coupon_changelist" %}" class="button deletelink">{% trans "Cancel" %}</a>
+        </p>
+        <input type="submit" value="{% trans "Generate coupons" %}" class="" />
+      </div>
       <div class="form-row">
         <fieldset class="module aligned">
           {% for field in form %}
