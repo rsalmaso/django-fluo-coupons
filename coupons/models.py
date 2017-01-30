@@ -42,6 +42,7 @@ from .settings import (
     SEGMENT_LENGTH,
     SEGMENT_SEPARATOR,
 )
+from . import get_coupon_types
 
 
 redeem_done = Signal(providing_args=["coupon"])
@@ -140,6 +141,7 @@ class Coupon(models.TimestampModel):
         help_text=_("Leaving this field empty will generate a random code."),
     )
     type = models.CharField(
+        choices=get_coupon_types(),
         max_length=20,
         verbose_name=_("Type"),
     )

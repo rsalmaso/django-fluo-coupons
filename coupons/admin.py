@@ -32,7 +32,6 @@ from fluo import admin
 
 from .models import Coupon, CouponUser, Campaign
 from . import views
-from . import get_coupon_types
 
 
 class CouponUserInline(admin.ReadOnlyTabularInline):
@@ -40,14 +39,7 @@ class CouponUserInline(admin.ReadOnlyTabularInline):
 
 
 class CouponAdminForm(forms.ModelForm):
-    type = forms.ChoiceField(
-        choices=get_coupon_types,
-        label=_("Type"),
-    )
-
-    class Meta:
-        model = Coupon
-        fields = "__all__"
+    pass
 
 
 @admin.register(Coupon)
