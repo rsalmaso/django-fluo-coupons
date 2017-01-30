@@ -34,6 +34,11 @@ from . import get_coupon_types
 
 
 class CouponGenerationForm(forms.Form):
+    campaign = forms.ModelChoiceField(
+        required=False,
+        queryset=Campaign.objects.all(),
+        label=_("Campaign"),
+    )
     quantity = forms.IntegerField(
         label=_("Quantity"),
     )
@@ -59,11 +64,6 @@ class CouponGenerationForm(forms.Form):
     prefix = forms.CharField(
         required=False,
         label=_("Prefix"),
-    )
-    campaign = forms.ModelChoiceField(
-        required=False,
-        queryset=Campaign.objects.all(),
-        label=_("Campaign"),
     )
 
 
