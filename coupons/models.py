@@ -59,7 +59,7 @@ class Campaign(models.TimestampModel):
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
         verbose_name = _("Campaign")
         verbose_name_plural = _("Campaigns")
 
@@ -169,7 +169,7 @@ class Coupon(models.TimestampModel):
     )
 
     class Meta:
-        ordering = ['created_at']
+        ordering = ["created_at"]
         verbose_name = _("Coupon")
         verbose_name_plural = _("Coupons")
 
