@@ -68,9 +68,15 @@ class CouponAdmin(admin.ModelAdmin):
         return my_urls + urls
 
 
+class CouponInline(admin.ReadOnlyTabularInline):
+    model = Coupon
+    exclude = ["created_at", "last_modified_at"]
+
+
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
     list_display = ["name", "num_coupons", "num_coupons_used", "num_coupons_unused", "num_coupons_expired"]
+    inlines = [CouponInline]
 
     def num_coupons(self, obj):
         return obj.coupons.count()
