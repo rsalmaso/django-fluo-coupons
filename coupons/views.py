@@ -29,7 +29,7 @@ import csv
 
 from django.http import StreamingHttpResponse
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import gettext_lazy as _, gettext
 from django.views.generic.base import TemplateView, View
 from fluo.http import JsonResponse
 
@@ -99,14 +99,14 @@ def is_authenticated(user):
 class CheckCouponView(View):
     def post(self, request):
         if is_authenticated(request.user):
-            status, message, data = 404, ugettext("not found"), {}
+            status, message, data = 404, gettext("not found"), {}
             code = request.POST.get("code", None)
             if code:
                 try:
                     coupon = Coupon.objects.active().get(code=code)
                     #coupon = Coupon.objects.get(code=code)
                     if coupon.is_usable:
-                        status, message, data = 200, ugettext("ok"), {
+                        status, message, data = 200, gettext("ok"), {
                             "value": coupon.value,
                             "code": coupon.code,
                             "type": coupon.type,
@@ -114,5 +114,5 @@ class CheckCouponView(View):
                 except Coupon.DoesNotExist:
                     pass
         else:
-            status, message, data = 403, ugettext("forbidden"), {}
+            status, message, data = 403, gettext("forbidden"), {}
         return JsonResponse({"status": status, "message": message, "data": data}, status=status)
