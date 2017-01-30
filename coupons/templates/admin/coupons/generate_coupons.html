@@ -64,6 +64,9 @@
         </fieldset>
       </div>
       <div class="submit-row">
+        <p class="deletelink-box">
+          <a href="{% url "admin:coupons_coupon_changelist" %}" class="button deletelink">{% trans "Cancel" %}</a>
+        </p>
         <input type="submit" value="{% trans "Generate coupons" %}" class="" />
       </div>{% if coupons %}
 
