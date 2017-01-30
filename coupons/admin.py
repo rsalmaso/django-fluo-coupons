@@ -51,7 +51,6 @@ class CouponAdmin(admin.ModelAdmin):
     raw_id_fields = []
     search_fields = ["code", "value"]
     inlines = [CouponUserInline]
-    exclude = ["users"]
     related_search_fields = {
         "user": ("pk", "username", "first_name", "last_name", "email"),
         "campaign": ("pk", "name"),
