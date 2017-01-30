@@ -46,6 +46,7 @@ class CouponAdminForm(forms.ModelForm):
 class CouponAdmin(admin.ModelAdmin):
     form = CouponAdminForm
     list_display = ["code", "type", "value", "user_count", "user_limit", "is_redeemed", "valid_until", "campaign"]
+    generate_coupons_view = views.GenerateCouponsAdminView
     list_filter = ["type", "campaign", "created_at", "valid_until"]
     raw_id_fields = []
     search_fields = ["code", "value"]
@@ -62,7 +63,7 @@ class CouponAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            url(r"^generate-coupons$", self.admin_site.admin_view(views.GenerateCouponsAdminView.as_view()), name="generate_coupons"),
+            url(r"^generate-coupons$", self.admin_site.admin_view(self.generate_coupons_view.as_view()), name="generate_coupons"),
         ]
         return my_urls + urls
 

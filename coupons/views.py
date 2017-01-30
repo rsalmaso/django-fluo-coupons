@@ -42,11 +42,12 @@ class Echo:
         return value
 
 class GenerateCouponsAdminView(TemplateView):
+    form = CouponGenerationForm
     template_name = "admin/coupons/generate_coupons.html"
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        context["form"] = CouponGenerationForm()
+        context["form"] = self.form()
         return self.render_to_response(context)
 
     def get_elements_as_csv(self, coupons):
@@ -69,7 +70,7 @@ class GenerateCouponsAdminView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        form = CouponGenerationForm(self.request.POST)
+        form = self.form(self.request.POST)
         if form.is_valid():
             coupons = Coupon.objects.create_coupons(
                 form.cleaned_data["quantity"],
