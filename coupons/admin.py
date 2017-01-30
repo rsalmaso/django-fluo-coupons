@@ -75,7 +75,7 @@ class CouponInline(admin.ReadOnlyTabularInline):
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ["name", "num_coupons", "num_coupons_used", "num_coupons_unused", "num_coupons_expired"]
+    list_display = ["name", "num_coupons", "num_coupons_used", "num_coupons_unused", "num_coupons_expired", "created_at"]
     inlines = [CouponInline]
 
     def num_coupons(self, obj):
