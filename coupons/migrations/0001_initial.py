@@ -30,7 +30,7 @@ from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 import fluo.db.models.fields
-from coupons import get_coupon_types
+from coupons.settings import COUPON_TYPES
 
 
 class Migration(migrations.Migration):
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
                 ('last_modified_at', fluo.db.models.fields.ModificationDateTimeField(blank=True, default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('value', models.IntegerField(help_text='Arbitrary coupon value', verbose_name='Value')),
                 ('code', models.CharField(blank=True, help_text='Leaving this field empty will generate a random code.', max_length=30, unique=True, verbose_name='Code')),
-                ('type', models.CharField(max_length=20, choices=get_coupon_types(), verbose_name='Type')),
+                ('type', models.CharField(max_length=20, choices=COUPON_TYPES, verbose_name='Type')),
                 ('user_limit', models.PositiveIntegerField(default=1, verbose_name='User limit')),
                 ('valid_from', models.DateTimeField(blank=True, help_text='Coupons are valid from this date', null=True, verbose_name='Valid from')),
                 ('valid_until', models.DateTimeField(blank=True, help_text='Coupons expire at this date', null=True, verbose_name='Valid until')),

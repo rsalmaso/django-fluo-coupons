@@ -32,8 +32,3 @@ VERSION = (1, 2, 0, "alpha", 9)
 __version__  = get_version(VERSION)
 __author__  = "Raffaele Salmaso"
 __email__ = "raffaele@salmaso.org"
-
-
-def get_coupon_types():
-    from .settings import COUPON_TYPES
-    return COUPON_TYPES
