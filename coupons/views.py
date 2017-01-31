@@ -105,7 +105,6 @@ class CheckCouponView(View):
             if code:
                 try:
                     coupon = Coupon.objects.active().get(code=code)
-                    #coupon = Coupon.objects.get(code=code)
                     if coupon.is_usable:
                         status, message, data = 200, gettext("ok"), {
                             "value": coupon.value,
