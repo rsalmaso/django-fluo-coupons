@@ -25,31 +25,21 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import string
-
-from django.conf import settings
-
-_ = lambda x: x
+from coupons import settings
+from django.db import migrations, models
 
 
-COUPON_TYPES = getattr(settings, "COUPONS_COUPON_TYPES", (
-    ("monetary", _("Money based coupon")),
-    ("percentage", _("Percentage discount")),
-    ("virtual_currency", _("Virtual currency")),
-))
 
-ACTION_TYPES = getattr(settings, "COUPONS_ACTION_TYPES", (
-    ("discount", _("Discount")),
-))
-try:
-    DEFAULT_ACTION_TYPE = getattr(settings, "COUPONS_DEFAULT_ACTION_TYPE", ACTION_TYPES[0][0])
-except IndexError:
-    DEFAULT_ACTION_TYPE = ""
+class Migration(migrations.Migration):
 
-CODE_LENGTH = getattr(settings, "COUPONS_CODE_LENGTH", 15)
+    dependencies = [
+        ('coupons', '0002_added_timestamp'),
+    ]
 
-CODE_CHARS = getattr(settings, "COUPONS_CODE_CHARS", string.ascii_letters+string.digits)
-
-SEGMENTED_CODES = getattr(settings, "COUPONS_SEGMENTED_CODES", False)
-SEGMENT_LENGTH = getattr(settings, "COUPONS_SEGMENT_LENGTH", 4)
-SEGMENT_SEPARATOR = getattr(settings, "COUPONS_SEGMENT_SEPARATOR", "-")
+    operations = [
+        migrations.AddField(
+            model_name='coupon',
+            name='action',
+            field=models.CharField(choices=settings.ACTION_TYPES, default=settings.DEFAULT_ACTION_TYPE, blank=True, max_length=20, verbose_name='Action'),
+        ),
+    ]

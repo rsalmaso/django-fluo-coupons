@@ -25,12 +25,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf import settings
-from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 import fluo.db.models.fields
 from coupons.settings import COUPON_TYPES
+from django.conf import settings
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):

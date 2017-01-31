@@ -75,6 +75,7 @@ class GenerateCouponsAdminView(TemplateView):
             coupons = Coupon.objects.create_coupons(
                 quantity=form.cleaned_data["quantity"],
                 type=form.cleaned_data["type"],
+                action=form.cleaned_data["action"],
                 value=form.cleaned_data["value"],
                 valid_from=form.cleaned_data["valid_from"],
                 valid_until=form.cleaned_data["valid_until"],

@@ -42,6 +42,8 @@ from .settings import (
     SEGMENT_LENGTH,
     SEGMENT_SEPARATOR,
     COUPON_TYPES,
+    ACTION_TYPES,
+    DEFAULT_ACTION_TYPE,
 )
 
 
@@ -86,11 +88,12 @@ class CouponQuerySet(models.QuerySet):
 
 
 class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
-    def create_coupon(self, type, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None):
+    def create_coupon(self, type, action, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None):
         coupon = self.create(
             value=value,
             code=Coupon.generate_code(prefix),
             type=type,
+            action=action,
             valid_from=valid_from,
             valid_until=valid_until,
             campaign=campaign,
@@ -103,6 +106,7 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
             # Try again with other code
             coupon = Coupon.objects.create_coupon(
                 type=type,
+                action=action,
                 value=value,
                 users=users,
                 valid_from=valid_from,
@@ -117,10 +121,11 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
                 CouponUser(user=user, coupon=coupon).save()
         return coupon
 
-    def create_coupons(self, quantity, type, value, valid_from=None, valid_until=None, prefix="", campaign=None):
+    def create_coupons(self, quantity, type, action, value, valid_from=None, valid_until=None, prefix="", campaign=None):
         return [
             self.create_coupon(
                 type=type,
+                action=action,
                 value=value,
                 users=None,
                 valid_from=valid_from,
@@ -131,8 +136,11 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
             for i in range(quantity)
         ]
 
-    def redeem(self, code, user, source=None):
-        coupon = self.active().get(code=code)
+    def redeem(self, code, user, source=None, action=None):
+        q = {"code": code}
+        if action is not None:
+            q["action"] = action
+        coupon = self.active().get(**q)
         return coupon.redeem(user=user, source=source)
 
 
@@ -160,6 +168,13 @@ class Coupon(models.TimestampModel):
         choices=COUPON_TYPES,
         max_length=20,
         verbose_name=_("Type"),
+    )
+    action = models.CharField(
+        choices=ACTION_TYPES,
+        max_length=20,
+        blank=True,
+        default=DEFAULT_ACTION_TYPE,
+        verbose_name=_("Action"),
     )
     user_limit = models.PositiveIntegerField(
         default=1,
