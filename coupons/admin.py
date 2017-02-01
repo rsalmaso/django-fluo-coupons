@@ -25,13 +25,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf.urls import url
 from django import forms
+from django.conf.urls import url
 from django.utils.translation import gettext_lazy as _
 from fluo import admin
 
-from .models import Coupon, CouponUser, Campaign
 from . import views
+from .models import Campaign, Coupon, CouponUser
 
 
 class CouponUserInline(admin.ReadOnlyTabularInline):
@@ -62,7 +62,7 @@ class CouponAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            url(r"^generate-coupons$", self.admin_site.admin_view(self.generate_coupons_view.as_view()), name="generate_coupons"),
+            url(r"^generate-coupons$", self.admin_site.admin_view(self.generate_coupons_view.as_view()), name="generate_coupons"),  # noqa
         ]
         return my_urls + urls
 
@@ -74,7 +74,7 @@ class CouponInline(admin.ReadOnlyTabularInline):
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ["name", "num_coupons", "num_coupons_used", "num_coupons_unused", "num_coupons_expired", "created_at"]
+    list_display = ["name", "num_coupons", "num_coupons_used", "num_coupons_unused", "num_coupons_expired", "created_at"]  # noqa
     inlines = [CouponInline]
 
     def num_coupons(self, obj):

@@ -29,7 +29,9 @@ import string
 
 from django.conf import settings
 
-_ = lambda x: x
+
+def _(x):
+    return x
 
 
 COUPON_TYPES = getattr(settings, "COUPONS_COUPON_TYPES", (

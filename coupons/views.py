@@ -29,7 +29,8 @@ import csv
 
 from django.http import StreamingHttpResponse
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _, gettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from django.views.generic.base import TemplateView, View
 from fluo.http import JsonResponse
 
@@ -40,6 +41,7 @@ from .models import Coupon
 class Echo:
     def write(self, value):
         return value
+
 
 class GenerateCouponsAdminView(TemplateView):
     form = CouponGenerationForm
@@ -84,8 +86,13 @@ class GenerateCouponsAdminView(TemplateView):
             )
             buffer = Echo()
             writer = csv.writer(buffer)
-            response = StreamingHttpResponse((writer.writerow(row) for row in self.get_elements_as_csv(coupons)), content_type="text/csv")
-            response['Content-Disposition'] = "attachment; filename=coupons-{}.csv".format(timezone.now().strftime("-%Y%m%d-%H%M%S"))
+            response = StreamingHttpResponse(
+                (writer.writerow(row) for row in self.get_elements_as_csv(coupons)),
+                content_type="text/csv",
+            )
+            response['Content-Disposition'] = "attachment; filename=coupons-{}.csv".format(
+                timezone.now().strftime("-%Y%m%d-%H%M%S"),
+            )
             return response
         context["form"] = form
         return self.render_to_response(context)

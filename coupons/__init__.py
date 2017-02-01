@@ -29,6 +29,6 @@ from .version import get_version
 
 VERSION = (1, 2, 0, "alpha", 9)
 
-__version__  = get_version(VERSION)
-__author__  = "Raffaele Salmaso"
+__version__ = get_version(VERSION)
+__author__ = "Raffaele Salmaso"
 __email__ = "raffaele@salmaso.org"

@@ -26,10 +26,10 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from django import forms
-from django.utils.translation import gettext_lazy as _
 from django.contrib.admin.widgets import AdminSplitDateTime
+from django.utils.translation import gettext_lazy as _
 
-from .models import Coupon, CouponUser, Campaign
+from .models import Campaign, Coupon, CouponUser
 from .settings import ACTION_TYPES, COUPON_TYPES
 
 

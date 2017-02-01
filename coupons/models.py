@@ -35,17 +35,9 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from fluo.db import models
 
-from .settings import (
-    CODE_LENGTH,
-    CODE_CHARS,
-    SEGMENTED_CODES,
-    SEGMENT_LENGTH,
-    SEGMENT_SEPARATOR,
-    COUPON_TYPES,
-    ACTION_TYPES,
-    DEFAULT_ACTION_TYPE,
-)
-
+from .settings import (ACTION_TYPES, CODE_CHARS, CODE_LENGTH, COUPON_TYPES,
+                       DEFAULT_ACTION_TYPE, SEGMENT_LENGTH, SEGMENT_SEPARATOR,
+                       SEGMENTED_CODES)
 
 redeem_done = Signal(providing_args=["coupon"])
 
@@ -82,13 +74,13 @@ class CouponQuerySet(models.QuerySet):
 
     def active(self):
         now = timezone.now()
-        q1 = Q(Q(valid_from__isnull=True)|Q(valid_from__lte=now))
-        q2 = Q(Q(valid_until__isnull=True)|Q(valid_until__gte=now))
+        q1 = Q(Q(valid_from__isnull=True) | Q(valid_from__lte=now))
+        q2 = Q(Q(valid_until__isnull=True) | Q(valid_until__gte=now))
         return self.filter(q1 & q2)
 
 
 class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
-    def create_coupon(self, type, action, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None):
+    def create_coupon(self, type, action, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None):  # noqa
         coupon = self.create(
             value=value,
             code=Coupon.generate_code(prefix),

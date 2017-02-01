@@ -1,16 +1,11 @@
-from datetime import timedelta
 import re
+from datetime import timedelta
 
-from django.utils import timezone
+from coupons.models import Campaign, Coupon
+from coupons.settings import (CODE_CHARS, CODE_LENGTH, SEGMENT_LENGTH,
+                              SEGMENT_SEPARATOR)
 from django.test import TestCase
-
-from coupons.models import Coupon, Campaign
-from coupons.settings import (
-    CODE_LENGTH,
-    CODE_CHARS,
-    SEGMENT_LENGTH,
-    SEGMENT_SEPARATOR,
-)
+from django.utils import timezone
 
 
 class CouponTestCase(TestCase):

@@ -2,11 +2,10 @@ from distutils.version import StrictVersion
 from unittest import skipIf
 
 import django
-from django.test import TestCase
-from django.contrib.admin.sites import AdminSite
-
 from coupons.admin import CouponAdmin
 from coupons.models import Coupon
+from django.contrib.admin.sites import AdminSite
+from django.test import TestCase
 
 
 class MockRequest(object):
