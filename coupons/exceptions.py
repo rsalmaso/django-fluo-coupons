@@ -29,5 +29,9 @@ class CouponError(Exception):
     pass
 
 
+class CouponExpiredError(CouponError):
+    pass
+
+
 class CouponUserLimitError(CouponError):
     pass

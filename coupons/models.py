@@ -140,6 +140,7 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
 class Coupon(models.TimestampModel):
     Error = exceptions.CouponError
     UserLimitError = exceptions.CouponUserLimitError
+    ExpiredError = exceptions.CouponExpiredError
 
     objects = CouponManager()
 
