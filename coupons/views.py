@@ -27,11 +27,12 @@
 
 import csv
 
-from django.http import StreamingHttpResponse
+from django.core.exceptions import PermissionDenied
+from django.http import Http404, StreamingHttpResponse
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-from django.utils.translation import gettext
-from django.views.generic.base import TemplateView, View
+from django.utils.translation import gettext, gettext_lazy as _
+from django.views import View
+from django.views.generic.base import TemplateView
 from fluo.http import JsonResponse
 
 from .forms import CouponGenerationForm
@@ -98,6 +99,7 @@ class GenerateCouponsAdminView(TemplateView):
         return self.render_to_response(context)
 
 
+
 def is_authenticated(user):
     import django
     if django.VERSION < (1, 10):
@@ -106,21 +108,56 @@ def is_authenticated(user):
 
 
 class CheckCouponView(View):
-    def post(self, request):
-        if is_authenticated(request.user):
-            status, message, data = 404, gettext("not found"), {}
-            code = request.POST.get("code", None)
-            if code:
-                try:
-                    coupon = Coupon.objects.active().get(code=code)
-                    if coupon.is_usable:
-                        status, message, data = 200, gettext("ok"), {
-                            "value": coupon.value,
-                            "code": coupon.code,
-                            "type": coupon.type,
-                        }
-                except Coupon.DoesNotExist:
-                    pass
+    def handle(self, request, coupon):
+        return True
+
+    def get_queryset(self):
+        code = self.request.POST.get("code")
+        return Coupon.objects.active().filter(code=code)
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        try:
+            return queryset.get()
+        except Coupon.DoesNotExist:
+            raise Http404
+
+    def handle_exception(self, request, exc, *args, **kwargs):
+        if isinstance(exc, Http404):
+            status, message = 404, _("Not found")
+        elif isinstance(exc, PermissionDenied):
+            status, message = 403, _("Permission denied.")
+        elif isinstance(exc, (Coupon.ExpiredError, Coupon.UserLimitError)):
+            status, message = 409, _("Coupon expired.")
         else:
-            status, message, data = 403, gettext("forbidden"), {}
+            status, message = 500, str(exc)
+        data = {'detail': message}
         return JsonResponse({"status": status, "message": message, "data": data}, status=status)
+
+    def post(self, request):
+        coupon = self.get_object()
+        if not coupon.is_usable:
+            raise Coupon.UserLimitError()
+        if coupon.is_expired:
+            raise Coupon.ExpiredError()
+        self.handle(request, coupon)
+        status, message, data = 200, gettext("ok"), {
+            "value": coupon.value,
+            "code": coupon.code,
+            "type": coupon.type,
+        }
+        return JsonResponse({"status": status, "message": message, "data": data}, status=status)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not (request.user and is_authenticated(request.user)):
+            raise PermissionDenied()
+        self.args = args
+        self.kwargs = kwargs
+        self.request = request
+
+        try:
+            response = super().dispatch(request, *args, **kwargs)
+        except Exception as exc:
+            response = self.handle_exception(request, exc, *args, **kwargs)
+
+        return response
