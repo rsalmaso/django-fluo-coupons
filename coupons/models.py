@@ -184,6 +184,10 @@ class Coupon(models.TimestampModel):
         super().save(*args, **kwargs)
 
     def expired(self):
+        return self.is_expired
+
+    @property
+    def is_expired(self):
         return self.valid_until is not None and self.valid_until < timezone.now()
 
     @property
