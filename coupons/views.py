@@ -73,13 +73,13 @@ class GenerateCouponsAdminView(TemplateView):
         form = self.form(self.request.POST)
         if form.is_valid():
             coupons = Coupon.objects.create_coupons(
-                form.cleaned_data["quantity"],
-                form.cleaned_data["type"],
-                form.cleaned_data["value"],
-                form.cleaned_data["valid_from"],
-                form.cleaned_data["valid_until"],
-                form.cleaned_data["prefix"],
-                form.cleaned_data["campaign"],
+                quantity=form.cleaned_data["quantity"],
+                type=form.cleaned_data["type"],
+                value=form.cleaned_data["value"],
+                valid_from=form.cleaned_data["valid_from"],
+                valid_until=form.cleaned_data["valid_until"],
+                prefix=form.cleaned_data["prefix"],
+                campaign=form.cleaned_data["campaign"],
             )
             buffer = Echo()
             writer = csv.writer(buffer)
