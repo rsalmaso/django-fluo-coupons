@@ -110,10 +110,18 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
         return coupon
 
     def create_coupons(self, quantity, type, value, valid_from=None, valid_until=None, prefix="", campaign=None):
-        coupons = []
-        for i in range(quantity):
-            coupons.append(self.create_coupon(type, value, None, valid_from, valid_until, prefix, campaign))
-        return coupons
+        return [
+            self.create_coupon(
+                type=type,
+                value=value,
+                users=None,
+                valid_from=valid_from,
+                valid_until=valid_until,
+                prefix=prefix,
+                campaign=campaign,
+            )
+            for i in range(quantity)
+        ]
 
     def redeem(self, code, user, source=None):
         coupon = self.active().get(code=code)
