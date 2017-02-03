@@ -101,7 +101,15 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
             coupon.save()
         except IntegrityError:
             # Try again with other code
-            coupon = Coupon.objects.create_coupon(type, value, users, valid_from, valid_until, prefix, campaign)
+            coupon = Coupon.objects.create_coupon(
+                type=type,
+                value=value,
+                users=users,
+                valid_from=valid_from,
+                valid_until=valid_until,
+                prefix=prefix,
+                campaign=campaign,
+            )
         if not isinstance(users, list):
             users = [users]
         for user in users:
