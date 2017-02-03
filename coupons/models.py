@@ -35,6 +35,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from fluo.db import models
 
+from . import exceptions
 from .settings import (ACTION_TYPES, CODE_CHARS, CODE_LENGTH, COUPON_TYPES,
                        DEFAULT_ACTION_TYPE, SEGMENT_LENGTH, SEGMENT_SEPARATOR,
                        SEGMENTED_CODES)
@@ -137,11 +138,8 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
 
 
 class Coupon(models.TimestampModel):
-    class CouponError(Exception):
-        pass
-
-    class UserLimitError(CouponError):
-        pass
+    Error = exceptions.CouponError
+    UserLimitError = exceptions.CouponUserLimitError
 
     objects = CouponManager()
 
