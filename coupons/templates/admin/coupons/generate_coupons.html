@@ -49,7 +49,7 @@
     <form id="changelist-form" action="" method="post">{% csrf_token %}
       <div class="submit-row">
         <p class="deletelink-box">
-          <a href="{% url "admin:coupons_coupon_changelist" %}" class="button deletelink">{% trans "Cancel" %}</a>
+          <a href="{% url "admin:coupons_coupon_changelist" %}" class="button deletelink">{% trans "Go back" %}</a>
         </p>
         <input type="submit" value="{% trans "Generate coupons" %}" class="" />
       </div>
@@ -75,7 +75,7 @@
       </div>
       <div class="submit-row">
         <p class="deletelink-box">
-          <a href="{% url "admin:coupons_coupon_changelist" %}" class="button deletelink">{% trans "Cancel" %}</a>
+          <a href="{% url "admin:coupons_coupon_changelist" %}" class="button deletelink">{% trans "Go back" %}</a>
         </p>
         <input type="submit" value="{% trans "Generate coupons" %}" class="" />
       </div>{% if coupons %}
