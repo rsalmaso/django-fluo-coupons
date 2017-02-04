@@ -84,6 +84,8 @@ class GenerateCouponsAdminView(TemplateView):
                 valid_until=form.cleaned_data["valid_until"],
                 prefix=form.cleaned_data["prefix"],
                 campaign=form.cleaned_data["campaign"],
+                code_chars=form.cleaned_data["code_chars"],
+                code_length=form.cleaned_data["code_length"],
             )
             buffer = Echo()
             writer = csv.writer(buffer)

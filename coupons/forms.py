@@ -69,6 +69,16 @@ class CouponGenerationForm(forms.Form):
         required=False,
         label=_("Prefix"),
     )
+    code_length = forms.IntegerField(
+        initial=settings.CODE_LENGTH,
+        label=_("Code length"),
+        help_text=_("Number of characters of generated code"),
+    )
+    code_chars = forms.CharField(
+        initial=settings.CODE_CHARS,
+        label=_("Code symbols"),
+        help_text=_("Use these charaters to generate code"),
+    )
 
 
 class CouponForm(forms.Form):
