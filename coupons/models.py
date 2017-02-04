@@ -81,10 +81,10 @@ class CouponQuerySet(models.QuerySet):
 
 
 class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
-    def create_coupon(self, type, action, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None):  # noqa
+    def create_coupon(self, type, action, value, users=[], valid_from=None, valid_until=None, prefix="", campaign=None, user_limit=None, code_chars=CODE_CHARS, code_length=CODE_LENGTH):  # noqa
         coupon = self.create(
             value=value,
-            code=Coupon.generate_code(prefix),
+            code=Coupon.generate_code(prefix=prefix, code_chars=code_chars, code_length=code_length),
             type=type,
             action=action,
             valid_from=valid_from,
@@ -106,6 +106,8 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
                 valid_until=valid_until,
                 prefix=prefix,
                 campaign=campaign,
+                code_chars=code_chars,
+                code_length=code_length,
             )
         if not isinstance(users, list):
             users = [users]
@@ -114,7 +116,7 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
                 CouponUser(user=user, coupon=coupon).save()
         return coupon
 
-    def create_coupons(self, quantity, type, action, value, valid_from=None, valid_until=None, prefix="", campaign=None):
+    def create_coupons(self, quantity, type, action, value, valid_from=None, valid_until=None, prefix="", campaign=None, code_chars=CODE_CHARS, code_length=CODE_LENGTH):  # noqa
         return [
             self.create_coupon(
                 type=type,
@@ -125,6 +127,8 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
                 valid_until=valid_until,
                 prefix=prefix,
                 campaign=campaign,
+                code_chars=code_chars,
+                code_length=code_length,
             )
             for i in range(quantity)
         ]
@@ -227,8 +231,8 @@ class Coupon(models.TimestampModel):
             return None
 
     @classmethod
-    def generate_code(cls, prefix="", segmented=SEGMENTED_CODES):
-        code = "".join(random.choice(CODE_CHARS) for i in range(CODE_LENGTH))
+    def generate_code(cls, prefix="", segmented=SEGMENTED_CODES, code_chars=CODE_CHARS, code_length=CODE_LENGTH):
+        code = "".join(random.choice(code_chars) for i in range(code_length))
         if segmented:
             code = SEGMENT_SEPARATOR.join([code[i:i + SEGMENT_LENGTH] for i in range(0, len(code), SEGMENT_LENGTH)])
             return prefix + code
