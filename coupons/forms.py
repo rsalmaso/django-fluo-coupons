@@ -29,8 +29,8 @@ from django import forms
 from django.contrib.admin.widgets import AdminSplitDateTime
 from django.utils.translation import gettext_lazy as _
 
+from . import settings
 from .models import Campaign, Coupon, CouponUser
-from .settings import ACTION_TYPES, COUPON_TYPES
 
 
 class CouponGenerationForm(forms.Form):
@@ -46,11 +46,11 @@ class CouponGenerationForm(forms.Form):
         label=_("Value"),
     )
     type = forms.ChoiceField(
-        choices=COUPON_TYPES,
+        choices=settings.COUPON_TYPES,
         label=_("Type"),
     )
     action = forms.ChoiceField(
-        choices=ACTION_TYPES,
+        choices=settings.ACTION_TYPES,
         label=_("Action"),
     )
     valid_from = forms.SplitDateTimeField(
