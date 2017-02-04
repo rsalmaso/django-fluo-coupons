@@ -39,6 +39,7 @@
 <div class="breadcrumbs">
   <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
   &rsaquo; <a href="{% url 'admin:app_list' app_label='coupons' %}">{% trans 'Coupons' %}</a>
+  &rsaquo; <a href="{% url 'admin:coupons_coupon_changelist' %}">{% trans 'Coupons' %}</a>
   &rsaquo; {% trans "Generate coupons" %}
 </div>
 {% endblock %}
