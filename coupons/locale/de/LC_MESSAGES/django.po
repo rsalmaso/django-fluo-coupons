@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 02:52+0200\n"
+"POT-Creation-Date: 2017-02-05 08:48+0100\n"
 "PO-Revision-Date: 2015-04-16 14:45+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: akuryou\n"
@@ -18,157 +18,203 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: admin.py:48 forms.py:48 models.py:150
-msgid "Type"
-msgstr "Typ"
+#: admin.py:61
+msgid "user count"
+msgstr ""
 
-#: admin.py:88
+#: admin.py:65
+msgid "user limit"
+msgstr ""
+
+#: admin.py:69
+msgid "is redeemed"
+msgstr ""
+
+#: admin.py:91
 msgid "coupons"
 msgstr "Gutscheine"
 
-#: admin.py:92
+#: admin.py:95
 msgid "used"
 msgstr "benutzt"
 
-#: admin.py:96
+#: admin.py:99
 msgid "unused"
 msgstr "unbenutzt"
 
-#: admin.py:100
+#: admin.py:103
 msgid "expired"
 msgstr "abgelaufen"
 
-#: apps.py:37 models.py:179 models.py:276
+#: apps.py:34 models.py:202 models.py:302
 #: templates/admin/coupons/generate_coupons.html:41
+#: templates/admin/coupons/generate_coupons.html:42
 msgid "Coupons"
 msgstr "Gutscheine"
 
-#: forms.py:41
-msgid "Quantity"
-msgstr "Menge"
-
-#: forms.py:44 models.py:138 views.py:57
-msgid "Value"
-msgstr "Wert"
-
-#: forms.py:53 models.py:159
-msgid "Valid from"
-msgstr ""
-
-#: forms.py:54 models.py:160
-msgid "Coupons are valid from this date"
-msgstr ""
-
-#: forms.py:59 models.py:165
-msgid "Valid until"
-msgstr "Gültig bis"
-
-#: forms.py:60 models.py:166
-msgid "Coupons expire at this date"
-msgstr ""
-
-#: forms.py:64
-msgid "Prefix"
-msgstr ""
-
-#: forms.py:69 models.py:68 models.py:172 views.py:57
+#: forms.py:40 models.py:59 models.py:196 views.py:58
 msgid "Campaign"
 msgstr "Kampagne"
 
+#: forms.py:43
+msgid "Quantity"
+msgstr "Menge"
+
+#: forms.py:46 models.py:152 views.py:58
+msgid "Value"
+msgstr "Wert"
+
+#: forms.py:50 models.py:165
+msgid "Type"
+msgstr "Typ"
+
+#: forms.py:54 models.py:172
+msgid "Action"
+msgstr ""
+
+#: forms.py:59 models.py:181
+msgid "Valid from"
+msgstr ""
+
+#: forms.py:60 models.py:182
+msgid "Coupons are valid from this date"
+msgstr ""
+
+#: forms.py:65 models.py:187
+msgid "Valid until"
+msgstr "Gültig bis"
+
+#: forms.py:66 models.py:188
+msgid "Coupons expire at this date"
+msgstr ""
+
+#: forms.py:70
+msgid "Prefix"
+msgstr ""
+
+#: forms.py:74
+msgid "Code length"
+msgstr ""
+
 #: forms.py:75
+msgid "Number of characters of generated code"
+msgstr ""
+
+#: forms.py:79
+msgid "Code symbols"
+msgstr ""
+
+#: forms.py:80
+msgid "Use these charaters to generate code"
+msgstr ""
+
+#: forms.py:86
 msgid "Coupon code"
 msgstr "Gutscheincode"
 
-#: forms.py:94
+#: forms.py:105
 msgid "This code is not valid."
 msgstr "Dieser Code ist nicht gültig."
 
-#: forms.py:101
+#: forms.py:112
 msgid ""
 "The server must provide an user to this form to allow you to use this code. "
 "Maybe you need to sign in?"
 msgstr ""
 
-#: forms.py:105 forms.py:117
+#: forms.py:116 forms.py:128
 msgid "This code has already been used."
 msgstr "Dieser Code wurde schon verwendet."
 
-#: forms.py:110
-#, fuzzy
-#| msgid "This code has already been used."
+#: forms.py:121
 msgid "This code has already been used by your account."
-msgstr "Dieser Code wurde schon verwendet."
+msgstr ""
 
-#: forms.py:115
+#: forms.py:126
 msgid "This code is not valid for your account."
 msgstr "Dieser Code gilt nicht für Ihren Account."
 
-#: forms.py:119
+#: forms.py:130
 msgid "This code is not meant to be used here."
 msgstr "Dieser Code kann hier nicht eingesetzt werden."
 
-#: forms.py:121
+#: forms.py:132
 msgid "This code is expired."
 msgstr "Dieser Code ist abgelaufen."
 
-#: models.py:59
+#: models.py:50
 msgid "Name"
 msgstr "Name"
 
-#: models.py:63
+#: models.py:54
 msgid "Description"
 msgstr "Beschreibung"
 
-#: models.py:69
+#: models.py:60
 msgid "Campaigns"
 msgstr "Kampagnen"
 
-#: models.py:139
+#: models.py:153
 msgid "Arbitrary coupon value"
 msgstr "Beliebiger Gutscheinwert"
 
-#: models.py:145 templates/admin/coupons/generate_coupons.html:76 views.py:57
+#: models.py:159 templates/admin/coupons/generate_coupons.html:90 views.py:58
 msgid "Code"
 msgstr "Code"
 
-#: models.py:146
+#: models.py:160
 msgid "Leaving this field empty will generate a random code."
 msgstr ""
 "Falls dieses Feld leer gelassen wird wird ein zufälliger Code generiert."
 
-#: models.py:154
+#: models.py:176
 msgid "User limit"
 msgstr ""
 
-#: models.py:178 models.py:243 models.py:275
+#: models.py:201 models.py:269 models.py:301
 msgid "Coupon"
 msgstr "Gutschein"
 
-#: models.py:250
+#: models.py:276
 msgid "User"
 msgstr "Benutzer"
 
-#: models.py:255
+#: models.py:281
 msgid "Redeemed at"
 msgstr "Eingelöst am"
 
-#: models.py:263
+#: models.py:289
 msgid "source content type"
 msgstr ""
 
-#: models.py:268
+#: models.py:294
 msgid "source id"
 msgstr ""
 
+#: settings.py:38
+msgid "Money based coupon"
+msgstr ""
+
+#: settings.py:39
+msgid "Percentage discount"
+msgstr ""
+
+#: settings.py:40
+msgid "Virtual currency"
+msgstr ""
+
+#: settings.py:44
+msgid "Discount"
+msgstr ""
+
 #: templates/admin/coupons/change_list.html:5
-#, fuzzy
-#| msgid "Generate coupons"
 msgid "Generate"
-msgstr "Gutscheine erstellen"
+msgstr ""
 
 #: templates/admin/coupons/generate_coupons.html:4
-#: templates/admin/coupons/generate_coupons.html:42
-#: templates/admin/coupons/generate_coupons.html:67
+#: templates/admin/coupons/generate_coupons.html:43
+#: templates/admin/coupons/generate_coupons.html:55
+#: templates/admin/coupons/generate_coupons.html:81
 msgid "Generate coupons"
 msgstr "Gutscheine erstellen"
 
@@ -176,47 +222,43 @@ msgstr "Gutscheine erstellen"
 msgid "Home"
 msgstr "Home"
 
-#: templates/admin/coupons/generate_coupons.html:75
+#: templates/admin/coupons/generate_coupons.html:53
+#: templates/admin/coupons/generate_coupons.html:79
+msgid "Go back"
+msgstr ""
+
+#: templates/admin/coupons/generate_coupons.html:89
 msgid "Id"
 msgstr "Id"
 
-#: views.py:57
+#: views.py:58
 msgid "Count"
 msgstr ""
 
-#: views.py:57
+#: views.py:58
 msgid "ID"
 msgstr ""
 
-#: views.py:57
+#: views.py:58
 msgid "Start Date"
 msgstr ""
 
-#: views.py:57
+#: views.py:58
 msgid "Expiration Date"
 msgstr ""
 
-#: views.py:98
-msgid "not found"
+#: views.py:129
+msgid "Not found"
 msgstr ""
 
-#: views.py:105
+#: views.py:131
+msgid "Permission denied."
+msgstr ""
+
+#: views.py:133
+msgid "Coupon expired."
+msgstr ""
+
+#: views.py:146
 msgid "ok"
 msgstr ""
-
-#: views.py:113
-msgid "forbidden"
-msgstr ""
-
-#~ msgid "Your coupons have been generated."
-#~ msgstr "Ihre Gutscheine wurden erstellt."
-
-#~ msgid "Leave empty for coupons that never expire"
-#~ msgstr "Leer lassen für Gutscheine ohne Ablaufdatum"
-
-#~ msgid "You may specify a user you want to restrict this coupon to."
-#~ msgstr ""
-#~ "Sie können einen Benutzer angeben auf den der Gutschein beschränkt ist."
-
-#~ msgid "Created at"
-#~ msgstr "Erstellt am"
