@@ -47,7 +47,7 @@ class CouponAdmin(admin.ModelAdmin):
     form = CouponAdminForm
     generate_coupons_view = views.GenerateCouponsAdminView
     list_filter = ["type", "campaign", "created_at", "valid_until"]
-    list_display = ["code", "type", "_user_count", "value", "_user_limit", "is_redeemed", "valid_until", "campaign"]
+    list_display = ["code", "type", "_user_count", "value", "_user_limit", "_is_redeemed", "valid_until", "campaign"]
     raw_id_fields = []
     search_fields = ["code", "value"]
     inlines = [CouponUserInline]
@@ -63,6 +63,10 @@ class CouponAdmin(admin.ModelAdmin):
     def _user_limit(self, coupon):
         return coupon.user_limit
     _user_limit.short_description = _("user limit")
+
+    def _is_redeemed(self, coupon):
+        return coupon.is_redeemed
+    _is_redeemed.short_description = _("is redeemed")
 
     def get_urls(self):
         urls = super().get_urls()
