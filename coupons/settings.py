@@ -28,10 +28,7 @@
 import string
 
 from django.conf import settings
-
-
-def _(x):
-    return x
+from django.utils.translation import gettext_lazy as _
 
 
 COUPON_TYPES = getattr(settings, "COUPONS_COUPON_TYPES", (
