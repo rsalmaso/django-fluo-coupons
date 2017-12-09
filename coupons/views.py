@@ -101,14 +101,6 @@ class GenerateCouponsAdminView(TemplateView):
         return self.render_to_response(context)
 
 
-
-def is_authenticated(user):
-    import django
-    if django.VERSION < (1, 10):
-        return user.is_authenticated()
-    return user.is_authenticated
-
-
 class CheckCouponView(View):
     def handle(self, request, coupon):
         return True
@@ -151,7 +143,7 @@ class CheckCouponView(View):
         return JsonResponse({"status": status, "message": message, "data": data}, status=status)
 
     def dispatch(self, request, *args, **kwargs):
-        if not (request.user and is_authenticated(request.user)):
+        if not (request.user and request.user.is_authenticated):
             raise PermissionDenied()
         self.args = args
         self.kwargs = kwargs
