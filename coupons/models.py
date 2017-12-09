@@ -37,9 +37,10 @@ from django.utils.translation import gettext_lazy as _
 from fluo.db import models
 
 from . import exceptions
-from .settings import (ACTION_TYPES, CODE_CHARS, CODE_LENGTH, COUPON_TYPES,
-                       DEFAULT_ACTION_TYPE, SEGMENT_LENGTH, SEGMENT_SEPARATOR,
-                       SEGMENTED_CODES)
+from .settings import (
+    ACTION_TYPES, CODE_CHARS, CODE_LENGTH, COUPON_TYPES, DEFAULT_ACTION_TYPE, SEGMENT_LENGTH, SEGMENT_SEPARATOR,
+    SEGMENTED_CODES,
+)
 
 redeem_done = Signal(providing_args=["coupon"])
 
