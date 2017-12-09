@@ -46,7 +46,7 @@ class CouponAdminForm(forms.ModelForm):
 class CouponAdmin(admin.ModelAdmin):
     form = CouponAdminForm
     generate_coupons_view = views.GenerateCouponsAdminView
-    list_display = ["code", "type", "_user_count", "value", "_user_limit", "_is_redeemed", "valid_from", "valid_until", "campaign"]
+    list_display = ["code", "type", "_user_count", "value", "_user_limit", "_is_redeemed", "valid_from", "valid_until", "campaign"]  # noqa: E501
     list_filter = ["type", "action", "campaign", "created_at", "valid_from", "valid_until"]
     raw_id_fields = []
     search_fields = ["code", "value"]
