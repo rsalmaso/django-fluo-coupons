@@ -32,6 +32,7 @@ from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.dispatch import Signal
 from django.utils import timezone
+from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
 from fluo.db import models
 
@@ -245,7 +246,7 @@ class Coupon(models.TimestampModel):
         return -1 < CouponUser.objects.filter(coupon=self).count() < user_limit
 
     @transaction.atomic
-    def redeem(self, user=None, source=None):
+    def redeem(self, user=None, source=None, **kwargs):
         if not self.is_usable:
             raise Coupon.UserLimitError()
 
@@ -258,7 +259,15 @@ class Coupon(models.TimestampModel):
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
 
+        self.do_redeem_pipeline(coupon_user=coupon_user, user=user, source=source, **kwargs)
+
         return coupon_user
+
+    def do_redeem_pipeline(self, **kwargs):
+        coupon = self
+        for name in getattr(settings, "COUPONS_REDEEM_PIPELINE", []):
+            pipeline = import_string(name)
+            coupon = pipeline(coupon=coupon, **kwargs)
 
 
 class CouponUser(models.TimestampModel):
