@@ -244,7 +244,10 @@ class Coupon(models.TimestampModel):
     @property
     def is_usable(self):
         user_limit = self.user_limit
-        return -1 < CouponUser.objects.filter(coupon=self).count() < user_limit
+        is_usable = -1 < CouponUser.objects.filter(coupon=self).count() < user_limit
+        if is_usable:
+            is_usable = self.do_is_usable_pipeline()
+        return is_usable
 
     @transaction.atomic
     def redeem(self, user=None, source=None, **kwargs):
@@ -263,6 +266,15 @@ class Coupon(models.TimestampModel):
         self.do_redeem_pipeline(coupon_user=coupon_user, user=user, source=source, **kwargs)
 
         return coupon_user
+
+    def do_is_usable_pipeline(self, **kwargs):
+        coupon = self
+        for name in getattr(settings, "COUPONS_IS_USABLE_PIPELINE", []):
+            pipeline = import_string(name)
+            coupon, is_usable = pipeline(coupon=coupon, **kwargs)
+            if not is_usable:
+                return False
+        return True
 
     def do_redeem_pipeline(self, **kwargs):
         coupon = self
