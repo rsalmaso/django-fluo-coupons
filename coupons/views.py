@@ -121,7 +121,7 @@ class CheckCouponView(View):
             status, message = 404, _("Not found")
         elif isinstance(exc, PermissionDenied):
             status, message = 403, _("Permission denied.")
-        elif isinstance(exc, (Coupon.ExpiredError, Coupon.UserLimitError)):
+        elif isinstance(exc, (Coupon.ExpiredError, Coupon.IsUsableError)):
             status, message = 409, _("Coupon expired.")
         else:
             status, message = 500, str(exc)
@@ -131,7 +131,7 @@ class CheckCouponView(View):
     def post(self, request):
         coupon = self.get_object()
         if not coupon.is_usable:
-            raise Coupon.UserLimitError()
+            raise Coupon.IsUsableError()
         if coupon.is_expired:
             raise Coupon.ExpiredError()
         self.handle(request, coupon)

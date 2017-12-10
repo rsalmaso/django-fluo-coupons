@@ -145,8 +145,8 @@ class CouponManager(models.Manager.from_queryset(CouponQuerySet)):
 
 class Coupon(models.TimestampModel):
     Error = exceptions.CouponError
-    UserLimitError = exceptions.CouponUserLimitError
     ExpiredError = exceptions.CouponExpiredError
+    IsUsableError = exceptions.CouponIsUsableError
 
     objects = CouponManager()
 
@@ -252,7 +252,7 @@ class Coupon(models.TimestampModel):
     @transaction.atomic
     def redeem(self, user=None, source=None, **kwargs):
         if not self.is_usable:
-            raise Coupon.UserLimitError()
+            raise Coupon.IsUsableError()
 
         coupon_user = CouponUser(coupon=self, user=user)
         coupon_user.redeemed_at = timezone.now()

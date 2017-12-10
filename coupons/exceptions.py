@@ -34,5 +34,5 @@ class CouponExpiredError(CouponError):
     pass
 
 
-class CouponUserLimitError(CouponError):
+class CouponIsUsableError(CouponError):
     pass
