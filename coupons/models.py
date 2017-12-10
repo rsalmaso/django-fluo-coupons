@@ -30,7 +30,6 @@ import random
 from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.db.models import Q
-from django.dispatch import Signal
 from django.utils import timezone
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
@@ -41,8 +40,6 @@ from .settings import (
     ACTION_TYPES, CODE_CHARS, CODE_LENGTH, COUPON_TYPES, DEFAULT_ACTION_TYPE, SEGMENT_LENGTH, SEGMENT_SEPARATOR,
     SEGMENTED_CODES,
 )
-
-redeem_done = Signal(providing_args=["coupon"])
 
 
 class Campaign(models.TimestampModel):
@@ -261,7 +258,6 @@ class Coupon(models.TimestampModel):
             coupon_user.source_id = source.pk
 
         coupon_user.save()
-        redeem_done.send(sender=self.__class__, coupon=self)
 
         self.do_redeem_pipeline(coupon_user=coupon_user, user=user, source=source, **kwargs)
 

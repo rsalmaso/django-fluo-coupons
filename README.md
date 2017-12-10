@@ -46,6 +46,7 @@ The difference is defined by the number of possible redeems and if they are boun
 ### V 1.2.0a13
 
  * renamed Coupon.UserLimitError to Coupon.IsUsableError
+ * removed redeem_done signal (use COUPONS_REDEEM_PIPELINE)
 
 ### V 1.2.0a12
 
