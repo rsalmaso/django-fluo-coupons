@@ -43,6 +43,13 @@ The difference is defined by the number of possible redeems and if they are boun
 
 ## Changelog
 
+### V 1.2.0a12
+
+ * added COUPONS_IS_USABLE_PIPELINE support
+ * added COUPONS_REDEEM_PIPELINE support
+ * drop python < 3 support
+ * drop django < 1.10 support
+
 ### V 1.2.0
 
 * Drop support for Django < 1.8
