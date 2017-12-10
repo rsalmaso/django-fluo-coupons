@@ -20,6 +20,7 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     install_require=["django-fluo"],
+    python_requires='>=3.4',
     classifiers=[
         "Framework :: Django",
         "Framework :: Django :: 1.10",
