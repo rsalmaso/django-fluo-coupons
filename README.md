@@ -43,6 +43,8 @@ The difference is defined by the number of possible redeems and if they are boun
 
 ## Changelog
 
+### V 1.2.0a13
+
 ### V 1.2.0a12
 
  * added COUPONS_IS_USABLE_PIPELINE support
